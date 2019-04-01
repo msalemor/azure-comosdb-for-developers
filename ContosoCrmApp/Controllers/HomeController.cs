@@ -2,6 +2,7 @@
 using ContosoCrm.DataAccess.Interfaces;
 using ContosoCrmApp.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
@@ -10,10 +11,13 @@ namespace ContosoCrmApp.Controllers
     public class HomeController : Controller
     {
         readonly IDocumentDbHelper<Contact> Repository;
-        public HomeController(IDocumentDbHelper<Contact> repo)
+        readonly IConfiguration Configuration;
+
+        public HomeController(IDocumentDbHelper<Contact> repo, IConfiguration config)
         {
             Repository = repo;
-            Repository.Initialize("ContosoCrm", "Contacts");
+            Configuration = config;
+            Repository.Initialize(Configuration["DatabaseId"], Configuration["CollectionId"]);
         }
 
         public async Task<IActionResult> Index()

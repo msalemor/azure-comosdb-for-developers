@@ -16,12 +16,14 @@
         private string databaseId;
         private string collectionId;
 
-        public virtual async Task<T> GetItemAsync(string id)
+        public virtual async Task<Tuple<double,T>> GetItemAsync(string id)
         {
             try
             {
-                Document document = await DocumentDbClientInstance.Client.ReadDocumentAsync(UriFactory.CreateDocumentUri(databaseId, collectionId, id));
-                return (T)(dynamic)document;
+                var result = await DocumentDbClientInstance.Client.ReadDocumentAsync(UriFactory.CreateDocumentUri(databaseId, collectionId, id));
+                var tuple = new Tuple<double, T>(result.RequestCharge, (T)(dynamic)result.Resource);
+                //return (T)(dynamic)document;
+                return tuple;
             }
             catch (DocumentClientException e)
             {
@@ -36,15 +38,28 @@
             }
         }
 
-        public virtual async Task<Tuple<double, IEnumerable<T>>> GetItemsAsync(Expression<Func<T, bool>> predicate)
+        public virtual async Task<Tuple<double, IEnumerable<T>>> GetItemsAsync(Expression<Func<T, bool>> predicate, Expression<Func<T, T>> selector = null)
         {
             double totalRUs = 0;
+            IDocumentQuery<T> query;
 
-            IDocumentQuery<T> query = DocumentDbClientInstance.Client.CreateDocumentQuery<T>(
-                UriFactory.CreateDocumentCollectionUri(databaseId, collectionId),
-                new FeedOptions { MaxItemCount = -1 })
-                .Where(predicate)
-                .AsDocumentQuery();
+            if (selector is null)
+            {
+                query = DocumentDbClientInstance.Client.CreateDocumentQuery<T>(
+                    UriFactory.CreateDocumentCollectionUri(databaseId, collectionId),
+                    new FeedOptions { MaxItemCount = -1 })
+                    .Where(predicate)
+                    .AsDocumentQuery();
+            }
+            else
+            {
+                query = DocumentDbClientInstance.Client.CreateDocumentQuery<T>(
+                    UriFactory.CreateDocumentCollectionUri(databaseId, collectionId),
+                    new FeedOptions { MaxItemCount = -1 })
+                    .Where(predicate)
+                    .Select(selector)
+                    .AsDocumentQuery();
+            }
 
             List<T> results = new List<T>();
             while (query.HasMoreResults)

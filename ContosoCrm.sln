@@ -3,11 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.489
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContosoCrmApp", "ContosoCrmApp\ContosoCrmApp.csproj", "{972E9D07-05FC-45E4-8B6C-AFF245AD40B2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContosoCrmApp", "ContosoCrmApp\ContosoCrmApp.csproj", "{972E9D07-05FC-45E4-8B6C-AFF245AD40B2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContosoCrm.Common", "ContosoCrm.Common\ContosoCrm.Common.csproj", "{8CB51846-8106-49FB-BDDF-BCA3B3F7FBBC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContosoCrm.Common", "ContosoCrm.Common\ContosoCrm.Common.csproj", "{8CB51846-8106-49FB-BDDF-BCA3B3F7FBBC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContosoCrm.DataAccess", "ContosoCrm.DataAccess\ContosoCrm.DataAccess.csproj", "{5A6AE81A-C4EB-4476-A49F-3746977946BE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContosoCrm.DataAccess", "ContosoCrm.DataAccess\ContosoCrm.DataAccess.csproj", "{5A6AE81A-C4EB-4476-A49F-3746977946BE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0EFE8AC5-6F5F-4FE3-8944-98220377B0B3}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

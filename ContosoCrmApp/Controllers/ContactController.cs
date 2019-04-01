@@ -2,45 +2,85 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ContosoCrm.Common.Models;
+using ContosoCrm.DataAccess.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 
 namespace ContosoCrmApp.Controllers
 {
     public class ContactController : Controller
     {
-        // GET: Lead
-        public ActionResult Index()
+        readonly IDocumentDbHelper<Contact> Repository;
+        readonly IConfiguration Configuration;
+        readonly ContactType DefaultContactType = ContactType.Contact;
+
+        public ContactController(IDocumentDbHelper<Contact> repo, IConfiguration config)
         {
-            return View();
+            Repository = repo;
+            Configuration = config;
+            Repository.Initialize(Configuration["DatabaseId"], Configuration["CollectionId"]);
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var result = await Repository.GetItemsAsync(c => c.ContactType == DefaultContactType,
+                c => new Contact
+                {
+                    Id = c.Id,
+                    Company = c.Company,
+                    FirstName = c.FirstName,
+                    LastName = c.LastName,
+                    Phone = c.Phone,
+                    Email = c.Email
+                });
+            ViewBag.Area = "Contacts";
+            ViewBag.TotalRUs = result.Item1;
+            return View(result.Item2);
         }
 
         // GET: Lead/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Details(string id)
         {
-            return View();
+            var result = await Repository.GetItemAsync(id);
+            ViewBag.Area = "Contact";
+            ViewBag.TotalRUs = result.Item1;
+            return View(result.Item2);
         }
 
         // GET: Lead/Create
         public ActionResult Create()
         {
-            return View();
+            ViewBag.Area = "Contact";
+            return View(new Contact());
         }
 
         // POST: Lead/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(Contact contact)
         {
             try
             {
-                // TODO: Add insert logic here
+                // Note: Not necessary. Let CosmosDB set the ID
+                contact.Id = null;
 
+                // set the contact type
+                contact.ContactType = DefaultContactType;
+
+                // TODO: Add insert logic here
+                if (!ModelState.IsValid)
+                {
+                    throw new Exception();
+                }
+                Repository.CreateItemAsync(contact);
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View();
+                ViewBag.Area = "Contact";
+                return View(contact);
             }
         }
 
