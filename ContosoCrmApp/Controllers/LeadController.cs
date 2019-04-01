@@ -41,7 +41,7 @@ namespace ContosoCrmApp.Controllers
         // GET: Lead/Details/5
         public async Task<ActionResult> Details(string id)
         {
-            var result = await Repository.GetItemAsync(id);
+            var result = await Repository.GetItemAsync(id, DefaultContactType.ToString());
             ViewBag.Area = "Lead";
             ViewBag.TotalRUs = result.Item1;
             return View(result.Item2);
@@ -63,7 +63,7 @@ namespace ContosoCrmApp.Controllers
             {
                 // Note: Not necessary. Let CosmosDB set the ID
                 contact.Id = null;
-                
+
                 // set the contact type
                 contact.ContactType = DefaultContactType;
 

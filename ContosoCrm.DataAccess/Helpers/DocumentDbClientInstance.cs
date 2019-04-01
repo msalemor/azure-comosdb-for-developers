@@ -9,6 +9,7 @@
         private static DocumentClient client;
         public static string EndpointUri;
         public static string AuthKey;
+        public static string PreferredLocations;
 
         // Optimization: reuse the client instance for the life of the application
         public static DocumentClient Client
@@ -21,11 +22,17 @@
                     {
                         // Optionmizations: Use Directing Mode
                         // Gateway mode adds more compatibility but adds and extra hop
-                        ConnectionMode = ConnectionMode.Direct
+                        ConnectionMode = ConnectionMode.Direct,
+                        EnableEndpointDiscovery = true
                     };
                     // Set preferred locations
-                    connectionPolicy.PreferredLocations.Add(LocationNames.EastUS);
-                    connectionPolicy.PreferredLocations.Add(LocationNames.WestUS);
+                    if (!string.IsNullOrEmpty(PreferredLocations))
+                    {
+                        foreach(var location in PreferredLocations.Split(','))
+                        {
+                            connectionPolicy.PreferredLocations.Add(location);
+                        }
+                    }
                     client = new DocumentClient(new Uri(EndpointUri), AuthKey, connectionPolicy);
                     // Optiomization: OpenAsync()
                     client.OpenAsync().ConfigureAwait(true).GetAwaiter();

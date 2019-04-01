@@ -43,7 +43,7 @@ namespace ContosoCrmApp.Controllers
         // GET: Lead/Details/5
         public async Task<ActionResult> Details(string id)
         {
-            var result = await Repository.GetItemAsync(id);
+            var result = await Repository.GetItemAsync(id, DefaultContactType.ToString());
             ViewBag.Area = "Contact";
             ViewBag.TotalRUs = result.Item1;
             return View(result.Item2);

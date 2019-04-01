@@ -46,6 +46,7 @@ namespace ContosoCrmApp
 
             DocumentDbClientInstance.EndpointUri = Configuration["EndpointUri"];
             DocumentDbClientInstance.AuthKey = Configuration["AuthKey"];
+            DocumentDbClientInstance.PreferredLocations = Configuration["PreferredLocations"];
 
             services.AddTransient<IDocumentDbHelper<Contact>,ContactDocumentDbRepository>();
         }
