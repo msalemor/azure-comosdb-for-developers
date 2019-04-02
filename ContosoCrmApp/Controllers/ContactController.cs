@@ -26,16 +26,20 @@ namespace ContosoCrmApp.Controllers
         public async Task<IActionResult> Index()
         {
             // Optimization: Don't get the notes to minimize the payload
-            var result = await Repository.GetItemsAsync(c => c.ContactType == DefaultContactType,
-                c => new Contact
-                {
-                    Id = c.Id,
-                    Company = c.Company,
-                    FirstName = c.FirstName,
-                    LastName = c.LastName,
-                    Phone = c.Phone,
-                    Email = c.Email
-                });
+            var result = await Repository.GetItemsAsync
+                (
+                    c => c.ContactType == DefaultContactType,
+                    c => new Contact
+                    {
+                        Id = c.Id,
+                        Company = c.Company,
+                        FirstName = c.FirstName,
+                        LastName = c.LastName,
+                        Phone = c.Phone,
+                        Email = c.Email
+                    },
+                    DefaultContactType.ToString()
+                );
             ViewBag.Area = Constants.ContactList;
             ViewBag.TotalRUs = result.Item1;
             ViewBag.ReadEndpoint = result.Item2;

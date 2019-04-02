@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ContosoCrm.Common.Models;
+﻿using ContosoCrm.Common.Models;
 using ContosoCrm.DataAccess.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ContosoCrmApp.Controllers
 {
@@ -25,21 +23,25 @@ namespace ContosoCrmApp.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var result = await Repository.GetItemsAsync(c => c.ContactType == DefaultContactType,
-                c => new Contact
-                {
-                    Id = c.Id,
-                    Company = c.Company,
-                    FirstName = c.FirstName,
-                    LastName = c.LastName,
-                    Phone = c.Phone,
-                    Email = c.Email
-                });
+            var result = await Repository.GetItemsAsync
+                (
+                    c => c.ContactType == DefaultContactType,
+                    c => new Contact
+                    {
+                        Id = c.Id,
+                        Company = c.Company,
+                        FirstName = c.FirstName,
+                        LastName = c.LastName,
+                        Phone = c.Phone,
+                        Email = c.Email
+                    },
+                    DefaultContactType.ToString()
+                );
             ViewBag.Area = Constants.CustomerList;
             ViewBag.TotalRUs = result.Item1;
             ViewBag.ReadEndpoint = result.Item2;
             ViewBag.WriteEndpoint = result.Item3;
-            return View(result.Item4.ToList().OrderBy(c => c.LastName));        
+            return View(result.Item4.ToList().OrderBy(c => c.LastName));
         }
 
         // GET: Lead/Details/5
