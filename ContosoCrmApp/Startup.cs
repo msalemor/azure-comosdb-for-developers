@@ -18,6 +18,8 @@ namespace ContosoCrmApp
 {
     public class Startup
     {
+        public static string Region;
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -47,6 +49,7 @@ namespace ContosoCrmApp
             DocumentDbClientInstance.EndpointUri = Configuration["EndpointUri"];
             DocumentDbClientInstance.AuthKey = Configuration["AuthKey"];
             DocumentDbClientInstance.PreferredLocations = Configuration["PreferredLocations"];
+            Region = Configuration["Region"];
 
             services.AddTransient<IDocumentDbHelper<Contact>,ContactDocumentDbRepository>();
         }
