@@ -7,19 +7,131 @@ https://docs.microsoft.com/en-us/azure/cosmos-db/performance-tips
 
 # Code Optimizations:
 
+```
+public static DocumentClient Client
+        {
+            get
+            {
+                if (client is null)
+                {
+                    var connectionPolicy = new ConnectionPolicy
+                    {
+                        // Optionmizations: Use Directing Mode
+                        // Gateway mode adds more compatibility but adds and extra hop
+                        ConnectionMode = ConnectionMode.Direct,
+                        ConnectionProtocol = Protocol.Tcp,
+                        EnableEndpointDiscovery = true
+                    };
+                    // Set preferred locations
+                    if (!string.IsNullOrEmpty(PreferredLocations))
+                    {
+                        foreach(var location in PreferredLocations.Split(','))
+                        {
+                            connectionPolicy.PreferredLocations.Add(location);
+                        }
+                    }
+                    client = new DocumentClient(new Uri(EndpointUri), AuthKey, connectionPolicy);
+                    // Optiomization: OpenAsync()
+                    client.OpenAsync().Wait();
+                }
+                return client;
+            }
+```
+
   - Direct Mode vs Gateway Mode
   - Preferred Reading Locations
   - Singleton client instance
   - OpenAsync()
 
-# Addition Code Concepts
+# Additional Code Concepts
+
+```
+while (query.HasMoreResults)
+            {
+                var result = await query.ExecuteNextAsync<T>();
+
+                foreach (var key in result.ResponseHeaders.AllKeys)
+                {
+                    Debug.WriteLine($"Key: {key} Value: {result.ResponseHeaders[key]}");
+                }
+
+                // Information: Calcualte total RUs
+                totalRUs += result.RequestCharge;
+                results.AddRange(result);
+            }
+
+            return new Tuple<double, string, string, IEnumerable<T>>(totalRUs, 
+                DocumentDbClientInstance.Client.ReadEndpoint.ToString(), 
+                DocumentDbClientInstance.Client.WriteEndpoint.ToString(),
+                results);
+```
+
   - Detect and log the RUs
-  - Detect and log the reading region location
+  - Detect and log the read and write regions
 
 
 # Important Cosmos DB Concepts
 
-## Preferred Locations
+## Introduction And SLAs
+
+Azure Cosmos DB is Microsoft’s globally distributed multi-model database service. It offers turnkey global distribution across any number of Azure regions by transparently scaling and replicating your data wherever your users are. The service offers comprehensive **99.99% SLAs which covers the guarantees for throughput, consistency, availability and latency** for the Cosmos DB Database Accounts scoped to a single Azure region configured with any of the five Consistency Levels or Database Accounts spanning multiple Azure regions, configured with any of the four relaxed Consistency Levels. Azure Cosmos DB allows configuring multiple Azure regions as writable endpoints for a Database Account. In this configuration, Cosmos DB **offers 99.999% SLA** for both read and write availability. 
+
+### More About SLAs
+
+https://azure.microsoft.com/en-us/support/legal/sla/cosmos-db/v1_2/
+
+#### Compound Availability
+
+CosmosDB may help in improving compound availability where system A depends on system B. Suppose systems A and B 
+have a 99.95% availability. The total compoind availability would be:
+
+```
+A * B = 99.95% * 99.95% = 99.90%
+
+Note: That could mean up to 500 minutes of downtime a year.
+```
+
+But if system B was CosmosDB at 99.999% then the total compound availability would be:
+
+```
+99.95% * 99.999% = 99.949%
+
+Note: That could mean up to 250 minutes of downtime a year.
+```
+
+## Preferred Locations and EnableEndpointDiscovery
+
+```
+public static DocumentClient Client
+        {
+            get
+            {
+                if (client is null)
+                {
+                    var connectionPolicy = new ConnectionPolicy
+                    {
+                        // Optionmizations: Use Directing Mode
+                        // Gateway mode adds more compatibility but adds and extra hop
+                        ConnectionMode = ConnectionMode.Direct,
+                        ConnectionProtocol = Protocol.Tcp,
+                        EnableEndpointDiscovery = true
+                    };
+                    // Set preferred locations
+                    if (!string.IsNullOrEmpty(PreferredLocations))
+                    {
+                        foreach(var location in PreferredLocations.Split(','))
+                        {
+                            connectionPolicy.PreferredLocations.Add(location);
+                        }
+                    }
+                    client = new DocumentClient(new Uri(EndpointUri), AuthKey, connectionPolicy);
+                    // Optiomization: OpenAsync()
+                    client.OpenAsync().Wait();
+                }
+                return client;
+            }
+        }
+```
 
 When EnableEndpointDiscovery is true and the value of this property is non-empty, the SDK uses the locations in the collection in the order they are specified to perform operations, otherwise if the value of this property is not specified, the SDK uses the write region as the preferred location for all operations.
 
