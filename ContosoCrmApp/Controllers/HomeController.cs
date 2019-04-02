@@ -4,6 +4,7 @@ using ContosoCrmApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ContosoCrmApp.Controllers
@@ -17,14 +18,16 @@ namespace ContosoCrmApp.Controllers
         {
             Repository = repo;
             Configuration = config;
-            Repository.Initialize(Configuration["DatabaseId"], Configuration["CollectionId"]);
+            Repository.Initialize(Configuration[Constants.DatabaseId], Configuration[Constants.CollectionId]);
         }
 
         public async Task<IActionResult> Index()
         {
-            var result = await Repository.GetItemsAsync(c => 1 == 1);
+            // Execute a cross partition query
+            var result = await Repository.GetItemsAsync(c => true);
+            var list = result.Item2.ToList().OrderBy(c => c.LastName);
             ViewBag.TotalRUs = result.Item1;
-            return View(result.Item2);
+            return View(list);
         }
 
         public IActionResult Privacy()

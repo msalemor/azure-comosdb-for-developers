@@ -1,6 +1,5 @@
 ﻿using ContosoCrm.Common.Models;
 using ContosoCrm.DataAccess.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -18,7 +17,7 @@ namespace ContosoCrmApp.Controllers
         {
             Repository = repo;
             Configuration = config;
-            Repository.Initialize(Configuration["DatabaseId"], Configuration["CollectionId"]);
+            Repository.Initialize(Configuration[Constants.DatabaseId], Configuration[Constants.CollectionId]);
         }
 
         public async Task<IActionResult> Index()
@@ -32,8 +31,8 @@ namespace ContosoCrmApp.Controllers
                     LastName = c.LastName,
                     Phone = c.Phone,
                     Email = c.Email
-                });
-            ViewBag.Area = "Leads";
+                },DefaultContactType.ToString());
+            ViewBag.Area = Constants.LeadList;
             ViewBag.TotalRUs = result.Item1;
             return View(result.Item2);
         }
@@ -42,7 +41,7 @@ namespace ContosoCrmApp.Controllers
         public async Task<ActionResult> Details(string id)
         {
             var result = await Repository.GetItemAsync(id, DefaultContactType.ToString());
-            ViewBag.Area = "Lead";
+            ViewBag.Area = Constants.LeadArea;
             ViewBag.TotalRUs = result.Item1;
             return View(result.Item2);
         }
@@ -50,7 +49,7 @@ namespace ContosoCrmApp.Controllers
         // GET: Lead/Create
         public ActionResult Create()
         {
-            ViewBag.Area = "Lead";
+            ViewBag.Area = Constants.LeadArea;
             return View(new Contact());
         }
 
@@ -77,54 +76,78 @@ namespace ContosoCrmApp.Controllers
             }
             catch
             {
-                ViewBag.Area = "Lead";
+                ViewBag.Area = Constants.LeadArea;
                 return View(contact);
             }
         }
 
         // GET: Lead/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(string id)
         {
-            return View();
+            var result = await Repository.GetItemAsync(id, DefaultContactType.ToString());
+            ViewBag.Area = Constants.LeadArea;
+            ViewBag.TotalRUs = result.Item1;
+            return View(result.Item2);
         }
 
         // POST: Lead/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Edit(Contact contact)
         {
             try
             {
-                // TODO: Add update logic here
-
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    // TODO: Add update logic here
+                    await Repository.UpdateItemAsync(contact.Id, contact);
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    throw new Exception();
+                }
             }
             catch
             {
-                return View();
+                ViewBag.Error = "Unable to edit record.";
+                ViewBag.Area = Constants.LeadArea;
+                return View(contact);
             }
         }
 
         // GET: Lead/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(string id)
         {
-            return View();
+            var result = await Repository.GetItemAsync(id, DefaultContactType.ToString());
+            ViewBag.Area = Constants.LeadArea;
+            ViewBag.TotalRUs = result.Item1;
+            return View(result.Item2);
         }
 
         // POST: Lead/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> Delete(Contact contact)
         {
             try
             {
-                // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
+                if (!string.IsNullOrEmpty(contact.Id))
+                {
+                    // TODO: Add delete logic here
+                    await Repository.DeleteItemAsync(contact.Id, contact.ContactType.ToString());
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    throw new Exception();
+                }
             }
             catch
             {
-                return View();
+                ViewBag.Area = Constants.LeadArea;
+                ViewBag.Error = "Unable to delete record.";
+                return View(contact);
             }
         }
     }

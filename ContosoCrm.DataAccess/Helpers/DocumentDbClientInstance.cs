@@ -35,7 +35,7 @@
                     }
                     client = new DocumentClient(new Uri(EndpointUri), AuthKey, connectionPolicy);
                     // Optiomization: OpenAsync()
-                    client.OpenAsync().ConfigureAwait(true).GetAwaiter();
+                    client.OpenAsync().Wait();
                 }
                 return client;
             }

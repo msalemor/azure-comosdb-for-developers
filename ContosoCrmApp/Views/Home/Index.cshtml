@@ -11,26 +11,30 @@
 <h1 class="display-4">All Contacts</h1>
 
 <div>
-    <table class="table table-striped table-hover">
-        <tr>
-            <th>Type</th>
-            <th>Last Name</th>
-            <th>First Name</th>
-            <th>Company</th>
-            <th>Email</th>
-            <th>Phone</th>
-        </tr>
-        @foreach (var contact in Model)
-        {
+    <table class="table table-dark table-striped table-hover">
+        <thead>
             <tr>
-                <td>@contact.ContactType</td>
-                <td>@contact.LastName</td>
-                <td>@contact.FirstName</td>
-                <td>@contact.Company</td>
-                <td>@contact.Email</td>
-                <td>@contact.Phone</td>
+                <th>Type</th>
+                <th>Last Name</th>
+                <th>First Name</th>
+                <th>Company</th>
+                <th>Email</th>
+                <th>Phone</th>
             </tr>
-        }
+        </thead>
+        <tbody>
+            @foreach (var contact in Model)
+            {
+                <tr>
+                    <td>@contact.ContactType</td>
+                    <td>@contact.LastName</td>
+                    <td>@contact.FirstName</td>
+                    <td>@contact.Company</td>
+                    <td>@contact.Email</td>
+                    <td>@contact.Phone</td>
+                </tr>
+            }
+        </tbody>
     </table>
 </div>
 

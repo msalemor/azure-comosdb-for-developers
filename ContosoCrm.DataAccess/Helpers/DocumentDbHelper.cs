@@ -40,16 +40,27 @@
             }
         }
 
-        public virtual async Task<Tuple<double, IEnumerable<T>>> GetItemsAsync(Expression<Func<T, bool>> predicate, Expression<Func<T, T>> selector = null)
+        public virtual async Task<Tuple<double, IEnumerable<T>>> GetItemsAsync(Expression<Func<T, bool>> predicate, Expression<Func<T, T>> selector = null, string partitionKey = null)
         {
             double totalRUs = 0;
             IDocumentQuery<T> query;
+            FeedOptions options = new FeedOptions { MaxItemCount = -1 };
+
+            if (!string.IsNullOrEmpty(partitionKey))
+            {
+                options.PartitionKey = new PartitionKey(partitionKey);
+                options.EnableCrossPartitionQuery = false;
+            }
+            else
+            {
+                options.EnableCrossPartitionQuery = true;
+            }
 
             if (selector is null)
             {
                 query = DocumentDbClientInstance.Client.CreateDocumentQuery<T>(
                     UriFactory.CreateDocumentCollectionUri(databaseId, collectionId),
-                    new FeedOptions { MaxItemCount = -1, EnableCrossPartitionQuery = true })
+                    options)
                     .Where(predicate)
                     .AsDocumentQuery();
             }
@@ -57,7 +68,7 @@
             {
                 query = DocumentDbClientInstance.Client.CreateDocumentQuery<T>(
                     UriFactory.CreateDocumentCollectionUri(databaseId, collectionId),
-                    new FeedOptions { MaxItemCount = -1, EnableCrossPartitionQuery = true })
+                    options)
                     .Where(predicate)
                     .Select(selector)
                     .AsDocumentQuery();
@@ -91,9 +102,10 @@
             return await DocumentDbClientInstance.Client.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(databaseId, collectionId, id), item);
         }
 
-        public virtual async Task DeleteItemAsync(string id)
+        public virtual async Task DeleteItemAsync(string id, string partionKey)
         {
-            await DocumentDbClientInstance.Client.DeleteDocumentAsync(UriFactory.CreateDocumentUri(databaseId, collectionId, id));
+            var options = new RequestOptions { PartitionKey = new PartitionKey(partionKey) };
+            await DocumentDbClientInstance.Client.DeleteDocumentAsync(UriFactory.CreateDocumentUri(databaseId, collectionId, id), options);
         }
 
         public virtual void Initialize(string dbId, string colId)
