@@ -24,7 +24,10 @@ namespace ContosoCrmApp.Controllers
         public async Task<IActionResult> Index()
         {
             // Execute a cross partition query
-            var result = await Repository.GetItemsAsync(c => true);
+            // Demo: compare getting all the properties vs not all the properties
+            var result = await Repository.GetItemsAsync(c => true,
+                c => new Contact { LastName = c.LastName, FirstName = c.FirstName, Email = c.Email, Phone = c.Phone, Company = c.Company, ContactType= c.ContactType });
+            //var result = await Repository.GetItemsAsync(c => true);
             var list = result.Item4.ToList().OrderBy(c => c.LastName);
             ViewBag.TotalRUs = result.Item1;
             ViewBag.ReadEndpoint = result.Item2;
