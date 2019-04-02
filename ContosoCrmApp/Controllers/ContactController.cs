@@ -38,7 +38,9 @@ namespace ContosoCrmApp.Controllers
                 });
             ViewBag.Area = Constants.ContactList;
             ViewBag.TotalRUs = result.Item1;
-            return View(result.Item2);
+            ViewBag.ReadEndpoint = result.Item2;
+            ViewBag.WriteEndpoint = result.Item3;
+            return View(result.Item4.ToList().OrderBy(c => c.LastName));
         }
 
         // GET: Lead/Details/5

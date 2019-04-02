@@ -25,8 +25,10 @@ namespace ContosoCrmApp.Controllers
         {
             // Execute a cross partition query
             var result = await Repository.GetItemsAsync(c => true);
-            var list = result.Item2.ToList().OrderBy(c => c.LastName);
+            var list = result.Item4.ToList().OrderBy(c => c.LastName);
             ViewBag.TotalRUs = result.Item1;
+            ViewBag.ReadEndpoint = result.Item2;
+            ViewBag.WriteEndpoint = result.Item3;
             return View(list);
         }
 

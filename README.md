@@ -19,6 +19,12 @@ https://docs.microsoft.com/en-us/azure/cosmos-db/performance-tips
 
 # Important Cosmos DB Concepts
 
+## Preferred Locations
+
+When EnableEndpointDiscovery is true and the value of this property is non-empty, the SDK uses the locations in the collection in the order they are specified to perform operations, otherwise if the value of this property is not specified, the SDK uses the write region as the preferred location for all operations.
+
+If EnableEndpointDiscovery is set to false, the value of this property is ignored.
+
 ## RUs
 
 Azure Cosmos DB is offered in units of solid-state drive (SSD) backed storage and throughput. Request units measure Azure Cosmos DB throughput per second, and request unit consumption varies by operation and JSON document. Use this calculator to determine the number of request units per second (RU/s) and the amount of data storage needed by your application.

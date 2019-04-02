@@ -11,7 +11,7 @@
         Task<Document> CreateItemAsync(T item);
         Task DeleteItemAsync(string id, string partionKey);
         Task<Tuple<double, T>> GetItemAsync(string id, string partitionKey);
-        Task<Tuple<double, IEnumerable<T>>> GetItemsAsync(Expression<Func<T, bool>> predicate, Expression<Func<T, T>> selector = null, string partitionKey = null);
+        Task<Tuple<double, string, string, IEnumerable<T>>> GetItemsAsync(Expression<Func<T, bool>> predicate, Expression<Func<T, T>> selector = null, string partitionKey = null);
         void Initialize(string dbId, string colId);
         Task<Document> UpdateItemAsync(string id, T item);
     }

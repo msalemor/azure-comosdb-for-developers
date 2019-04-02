@@ -10,6 +10,8 @@
         public static string EndpointUri;
         public static string AuthKey;
         public static string PreferredLocations;
+        public static string CONNECTION_MODE;
+        public static string PROTOCOL;
 
         // Optimization: reuse the client instance for the life of the application
         public static DocumentClient Client
@@ -23,6 +25,7 @@
                         // Optionmizations: Use Directing Mode
                         // Gateway mode adds more compatibility but adds and extra hop
                         ConnectionMode = ConnectionMode.Direct,
+                        ConnectionProtocol = Protocol.Tcp,
                         EnableEndpointDiscovery = true
                     };
                     // Set preferred locations

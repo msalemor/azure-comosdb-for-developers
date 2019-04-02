@@ -3,6 +3,7 @@ using ContosoCrm.DataAccess.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ContosoCrmApp.Controllers
@@ -34,7 +35,9 @@ namespace ContosoCrmApp.Controllers
                 },DefaultContactType.ToString());
             ViewBag.Area = Constants.LeadList;
             ViewBag.TotalRUs = result.Item1;
-            return View(result.Item2);
+            ViewBag.ReadEndpoint = result.Item2;
+            ViewBag.WriteEndpoint = result.Item3;
+            return View(result.Item4.ToList().OrderBy(c=>c.LastName));
         }
 
         // GET: Lead/Details/5
