@@ -42,6 +42,8 @@ public static DocumentClient Client
   - Preferred Reading Locations
   - Singleton client instance
   - OpenAsync()
+  - For local development, consider using the emulator
+    - https://docs.microsoft.com/en-us/azure/cosmos-db/local-emulator
 
 # Additional Code Concepts
 

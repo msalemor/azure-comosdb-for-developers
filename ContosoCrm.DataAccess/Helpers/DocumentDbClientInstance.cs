@@ -26,7 +26,14 @@
                         // Gateway mode adds more compatibility but adds and extra hop
                         ConnectionMode = ConnectionMode.Direct,
                         ConnectionProtocol = Protocol.Tcp,
-                        EnableEndpointDiscovery = true
+                        EnableEndpointDiscovery = true,
+                        RetryOptions = new RetryOptions
+                        {
+                            // Default
+                            MaxRetryAttemptsOnThrottledRequests = 9,
+                            // Default
+                            MaxRetryWaitTimeInSeconds = 30,
+                        }
                     };
                     // Set preferred locations
                     if (!string.IsNullOrEmpty(PreferredLocations))
