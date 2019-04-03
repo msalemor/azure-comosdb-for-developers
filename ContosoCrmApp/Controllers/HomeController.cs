@@ -28,11 +28,11 @@ namespace ContosoCrmApp.Controllers
             var result = await Repository.GetItemsAsync(c => true,
                 c => new Contact { LastName = c.LastName, FirstName = c.FirstName, Email = c.Email, Phone = c.Phone, Company = c.Company, ContactType= c.ContactType });
             //var result = await Repository.GetItemsAsync(c => true);
-            var list = result.Item4.ToList().OrderBy(c => c.LastName);
             ViewBag.TotalRUs = result.Item1;
             ViewBag.ReadEndpoint = result.Item2;
             ViewBag.WriteEndpoint = result.Item3;
-            return View(list);
+            ViewBag.ConsistencyLevel = result.Item4;
+            return View(result.Item5.ToList().OrderBy(c => c.LastName));
         }
 
         public IActionResult Privacy()

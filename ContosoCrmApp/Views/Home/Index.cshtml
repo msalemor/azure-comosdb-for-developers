@@ -21,8 +21,8 @@
                 <h6 class="card-subtitle mb-2 text-muted">@contact.Phone</h6>
                 <h6 class="card-subtitle mb-2 text-muted">@contact.Email</h6>
                 @*<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        <a href="#" class="card-link">Card link</a>
-        <a href="#" class="card-link">Another link</a>*@
+                    <a href="#" class="card-link">Card link</a>
+                    <a href="#" class="card-link">Another link</a>*@
             </div>
         </div>
     }
@@ -56,5 +56,11 @@
 @*</div>*@
 
 <div>
-    <p>&nbsp;<br/><strong>Cosmos DB Information:</strong><br/>RUs: @ViewBag.TotalRUs<br/>Read Region: @ViewBag.ReadEndpoint<br />Write Region: @ViewBag.WriteEndpoint</p>
+    <p>
+        &nbsp;<br /><strong>Cosmos DB Information:</strong><br />
+        RUs: @ViewBag.TotalRUs<br />
+        Read Region: @ViewBag.ReadEndpoint<br />
+        Write Region: @ViewBag.WriteEndpoint<br/>
+        Consistency Level: @ViewBag.ConsistencyLevel
+    </p>
 </div>

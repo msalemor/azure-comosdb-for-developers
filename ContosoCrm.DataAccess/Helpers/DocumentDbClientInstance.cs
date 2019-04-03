@@ -27,6 +27,7 @@
                         ConnectionMode = ConnectionMode.Direct,
                         ConnectionProtocol = Protocol.Tcp,
                         EnableEndpointDiscovery = true,
+                        UseMultipleWriteLocations = true,
                         RetryOptions = new RetryOptions
                         {
                             // Default
@@ -35,14 +36,15 @@
                             MaxRetryWaitTimeInSeconds = 30,
                         }
                     };
-                    // Set preferred locations
-                    if (!string.IsNullOrEmpty(PreferredLocations))
-                    {
-                        foreach(var location in PreferredLocations.Split(','))
-                        {
-                            connectionPolicy.PreferredLocations.Add(location);
-                        }
-                    }
+                    connectionPolicy.SetCurrentLocation(PreferredLocations);
+                    //Set preferred locations
+                    //if (!string.IsNullOrEmpty(PreferredLocations))
+                    //{
+                    //    foreach(var location in PreferredLocations.Split(','))
+                    //    {
+                    //        connectionPolicy.PreferredLocations.Add(location);
+                    //    }
+                    //}
                     client = new DocumentClient(new Uri(EndpointUri), AuthKey, connectionPolicy);
                     // Optiomization: OpenAsync()
                     client.OpenAsync().Wait();

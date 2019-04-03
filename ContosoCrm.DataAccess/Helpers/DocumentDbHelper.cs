@@ -40,7 +40,7 @@
             }
         }
 
-        public virtual async Task<Tuple<double, string, string, IEnumerable<T>>> GetItemsAsync(Expression<Func<T, bool>> predicate, Expression<Func<T, T>> selector = null, string partitionKey = null)
+        public virtual async Task<Tuple<double, string, string, string, IEnumerable<T>>> GetItemsAsync(Expression<Func<T, bool>> predicate, Expression<Func<T, T>> selector = null, string partitionKey = null)
         {
             double totalRUs = 0;
             IDocumentQuery<T> query;
@@ -89,9 +89,10 @@
                 results.AddRange(result);
             }
 
-            return new Tuple<double, string, string, IEnumerable<T>>(totalRUs, 
+            return new Tuple<double, string, string, string, IEnumerable<T>>(totalRUs, 
                 DocumentDbClientInstance.Client.ReadEndpoint.ToString(), 
                 DocumentDbClientInstance.Client.WriteEndpoint.ToString(),
+                DocumentDbClientInstance.Client.ConsistencyLevel.ToString(),
                 results);
         }
 

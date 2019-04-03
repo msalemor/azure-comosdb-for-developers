@@ -44,7 +44,8 @@ namespace ContosoCrmApp.Controllers
             ViewBag.TotalRUs = result.Item1;
             ViewBag.ReadEndpoint = result.Item2;
             ViewBag.WriteEndpoint = result.Item3;
-            return View(result.Item4.ToList().OrderBy(c => c.LastName));
+            ViewBag.ConsistencyLevel = result.Item4;
+            return View(result.Item5.ToList().OrderBy(c => c.LastName));
         }
 
         // GET: Lead/Details/5
