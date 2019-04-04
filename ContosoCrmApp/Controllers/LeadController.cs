@@ -18,7 +18,7 @@ namespace ContosoCrmApp.Controllers
         {
             Repository = repo;
             Configuration = config;
-            Repository.Initialize(Configuration[Constants.DatabaseId], Configuration[Constants.CollectionId]);
+            Repository.Initialize(Configuration[Constants.DatabaseId], Configuration[Constants.CollectionId], partitionKey: Configuration[Constants.CollectionPartionKey]);
         }
 
         public async Task<IActionResult> Index()
@@ -42,7 +42,7 @@ namespace ContosoCrmApp.Controllers
             ViewBag.ReadEndpoint = result.Item2;
             ViewBag.WriteEndpoint = result.Item3;
             ViewBag.ConsistencyLevel = result.Item4;
-            return View(result.Item5.ToList().OrderBy(c=>c.LastName));
+            return View(result.Item5.ToList().OrderBy(c => c.LastName));
         }
 
         // GET: Lead/Details/5

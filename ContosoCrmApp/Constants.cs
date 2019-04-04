@@ -10,6 +10,7 @@ namespace ContosoCrmApp
     {
         public const string DatabaseId = "DatabaseId";
         public const string CollectionId = "CollectionId";
+        public const string CollectionPartionKey = "CollectionPartionKey";
 
         public const string LeadList = "Leads";
         public const string LeadArea = "Lead";
@@ -19,6 +20,5 @@ namespace ContosoCrmApp
 
         public const string CustomerList = "Customers";
         public const string CustomerArea = "Customer";
-
     }
 }

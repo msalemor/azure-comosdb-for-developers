@@ -16,6 +16,8 @@
         private string databaseId;
         private string collectionId;
 
+        #region Crud Operations
+
         public virtual async Task<Tuple<double, T>> GetItemAsync(string id, string partitionKey)
         {
             try
@@ -112,6 +114,10 @@
             await DocumentDbClientInstance.Client.DeleteDocumentAsync(UriFactory.CreateDocumentUri(databaseId, collectionId, id), options);
         }
 
+        #endregion
+
+        #region Management Operations
+
         public virtual void Initialize(string dbId, string colId, int offerThroughput = 1000, ConsistencyLevel consistencyLevel = ConsistencyLevel.Session, string partitionKey = null)
         {
             databaseId = dbId;
@@ -152,6 +158,10 @@
             }
             catch (DocumentClientException e)
             {
+                DocumentCollection documentCollection = new DocumentCollection
+                {
+                    Id = collectionId
+                };
 
                 var options = new RequestOptions
                 {
@@ -161,14 +171,14 @@
 
                 if (!string.IsNullOrEmpty(partitionKey))
                 {
-                    options.PartitionKey = new PartitionKey("/State");
+                    documentCollection.PartitionKey.Paths.Add(partitionKey);
                 }
 
                 if (e.StatusCode == System.Net.HttpStatusCode.NotFound)
                 {
                     await DocumentDbClientInstance.Client.CreateDocumentCollectionAsync(
                         UriFactory.CreateDatabaseUri(databaseId),
-                        new DocumentCollection { Id = collectionId },
+                        documentCollection,
                         options);
                 }
                 else
@@ -177,5 +187,7 @@
                 }
             }
         }
+
+        #endregion
     }
 }

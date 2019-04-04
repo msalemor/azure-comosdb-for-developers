@@ -20,7 +20,7 @@ namespace ContosoCrmApp.Controllers
         {
             Repository = repo;
             Configuration = config;
-            Repository.Initialize(Configuration[Constants.DatabaseId], Configuration[Constants.CollectionId]);
+            Repository.Initialize(Configuration[Constants.DatabaseId], Configuration[Constants.CollectionId], partitionKey: Configuration[Constants.CollectionPartionKey]);
         }
 
         public async Task<IActionResult> Index()

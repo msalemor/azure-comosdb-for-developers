@@ -20,7 +20,7 @@ namespace ContosoCrmApp.Controllers
             Configuration = config;
 
             Repository = repo;            
-            Repository.Initialize(Configuration[Constants.DatabaseId], Configuration[Constants.CollectionId]);
+            Repository.Initialize(Configuration[Constants.DatabaseId], Configuration[Constants.CollectionId], partitionKey: Configuration[Constants.CollectionPartionKey]);
 
             //CompanyRepository = companyRepository;
             //Repository.Initialize(Configuration[Constants.DatabaseId], "Company", partitionKey: "/State");
