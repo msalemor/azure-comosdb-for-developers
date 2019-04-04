@@ -15,6 +15,7 @@
     {
         private string databaseId;
         private string collectionId;
+        private string SelfLink;
 
         #region Crud Operations
 
@@ -127,6 +128,32 @@
             CreateCollectionIfNotExistsAsync(offerThroughput, consistencyLevel, partitionKey).Wait();
         }
 
+        public async Task<Offer> UpdateOfferForCollectionAsync(string collectionSelfLink, int newOfferThroughput)
+        {
+            // Create an asynchronous query to retrieve the current offer for the document collection
+            // Notice that the current version of the API only allows to use the SelfLink for the collection
+            // to retrieve its associated offer
+            Offer existingOffer = null;
+            var offerQuery = DocumentDbClientInstance.Client.CreateOfferQuery()
+                .Where(o => o.ResourceLink == collectionSelfLink)
+                .AsDocumentQuery();
+            while (offerQuery.HasMoreResults)
+            {
+                foreach (var offer in await offerQuery.ExecuteNextAsync<Offer>())
+                {
+                    existingOffer = offer;
+                }
+            }
+            if (existingOffer == null)
+            {
+                throw new Exception("I couldn't retrieve the offer for the collection.");
+            }
+            // Set the desired throughput to newOfferThroughput RU/s for the new offer built based on the current offer
+            var newOffer = new OfferV2(existingOffer, newOfferThroughput);
+            var replaceOfferResponse = await DocumentDbClientInstance.Client.ReplaceOfferAsync(newOffer);
+            return replaceOfferResponse.Resource;
+        }
+
         private async Task CreateDatabaseIfNotExistsAsync()
         {
             try
@@ -186,6 +213,8 @@
                     throw;
                 }
             }
+
+
         }
 
         #endregion
