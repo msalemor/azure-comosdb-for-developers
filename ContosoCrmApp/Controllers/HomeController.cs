@@ -11,14 +11,19 @@ namespace ContosoCrmApp.Controllers
 {
     public class HomeController : Controller
     {
+        readonly IDocumentDbHelper<Company> CompanyRepository;
         readonly IDocumentDbHelper<Contact> Repository;
         readonly IConfiguration Configuration;
 
-        public HomeController(IDocumentDbHelper<Contact> repo, IConfiguration config)
+        public HomeController(IDocumentDbHelper<Contact> repo, IConfiguration config, IDocumentDbHelper<Company> companyRepository)
         {
-            Repository = repo;
             Configuration = config;
+
+            Repository = repo;            
             Repository.Initialize(Configuration[Constants.DatabaseId], Configuration[Constants.CollectionId]);
+
+            //CompanyRepository = companyRepository;
+            //Repository.Initialize(Configuration[Constants.DatabaseId], "Company", partitionKey: "/State");
         }
 
         public async Task<IActionResult> Index()

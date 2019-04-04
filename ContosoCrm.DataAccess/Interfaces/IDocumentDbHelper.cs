@@ -12,7 +12,7 @@
         Task DeleteItemAsync(string id, string partionKey);
         Task<Tuple<double, T>> GetItemAsync(string id, string partitionKey);
         Task<Tuple<double, string, string, string, IEnumerable<T>>> GetItemsAsync(Expression<Func<T, bool>> predicate, Expression<Func<T, T>> selector = null, string partitionKey = null);
-        void Initialize(string dbId, string colId);
+        void Initialize(string dbId, string colId, int offerThroughput = 1000, ConsistencyLevel consistencyLevel = ConsistencyLevel.Session, string partitionKey = null);
         Task<Document> UpdateItemAsync(string id, T item);
     }
 }

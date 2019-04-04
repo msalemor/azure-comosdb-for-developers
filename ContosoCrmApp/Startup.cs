@@ -52,6 +52,7 @@ namespace ContosoCrmApp
             Region = Configuration["Region"];
 
             services.AddTransient<IDocumentDbHelper<Contact>,ContactDocumentDbRepository>();
+            services.AddTransient<IDocumentDbHelper<Company>, CompanyDocumentDbRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

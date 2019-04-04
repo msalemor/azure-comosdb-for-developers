@@ -89,8 +89,8 @@
                 results.AddRange(result);
             }
 
-            return new Tuple<double, string, string, string, IEnumerable<T>>(totalRUs, 
-                DocumentDbClientInstance.Client.ReadEndpoint.ToString(), 
+            return new Tuple<double, string, string, string, IEnumerable<T>>(totalRUs,
+                DocumentDbClientInstance.Client.ReadEndpoint.ToString(),
                 DocumentDbClientInstance.Client.WriteEndpoint.ToString(),
                 DocumentDbClientInstance.Client.ConsistencyLevel.ToString(),
                 results);
@@ -112,13 +112,13 @@
             await DocumentDbClientInstance.Client.DeleteDocumentAsync(UriFactory.CreateDocumentUri(databaseId, collectionId, id), options);
         }
 
-        public virtual void Initialize(string dbId, string colId)
+        public virtual void Initialize(string dbId, string colId, int offerThroughput = 1000, ConsistencyLevel consistencyLevel = ConsistencyLevel.Session, string partitionKey = null)
         {
             databaseId = dbId;
             collectionId = colId;
 
             CreateDatabaseIfNotExistsAsync().Wait();
-            CreateCollectionIfNotExistsAsync().Wait();
+            CreateCollectionIfNotExistsAsync(offerThroughput, consistencyLevel, partitionKey).Wait();
         }
 
         private async Task CreateDatabaseIfNotExistsAsync()
@@ -144,7 +144,7 @@
             }
         }
 
-        private async Task CreateCollectionIfNotExistsAsync()
+        private async Task CreateCollectionIfNotExistsAsync(int offerThroughput = 1000, ConsistencyLevel consistencyLevel = ConsistencyLevel.Session, string partitionKey = null)
         {
             try
             {
@@ -152,12 +152,24 @@
             }
             catch (DocumentClientException e)
             {
+
+                var options = new RequestOptions
+                {
+                    OfferThroughput = offerThroughput,
+                    ConsistencyLevel = consistencyLevel
+                };
+
+                if (!string.IsNullOrEmpty(partitionKey))
+                {
+                    options.PartitionKey = new PartitionKey("/State");
+                }
+
                 if (e.StatusCode == System.Net.HttpStatusCode.NotFound)
                 {
                     await DocumentDbClientInstance.Client.CreateDocumentCollectionAsync(
                         UriFactory.CreateDatabaseUri(databaseId),
                         new DocumentCollection { Id = collectionId },
-                        new RequestOptions { OfferThroughput = 1000 });
+                        options);
                 }
                 else
                 {
