@@ -1,0 +1,104 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ContosoCrm.Common21\ContosoCrm.Common21.csproj" />
+    <ProjectReference Include="..\ContosoCrm.DataAccess21\ContosoCrm.DataAccess21.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Views\Home\Index.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Home\Privacy.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Customer\Create.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\Contact\Create.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Contact\Delete.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Contact\Details.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Contact\Edit.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Contact\Index.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Customer\Create.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Customer\Delete.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Customer\Details.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Customer\Edit.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Customer\Index.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Lead\Create.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Lead\Delete.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Lead\Details.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Lead\Edit.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Lead\Index.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Customer\Delete.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Customer\Details.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Customer\Edit.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Customer\Index.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Lead\Create.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Lead\Delete.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Lead\Details.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Lead\Edit.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Lead\Index.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Contact\Create.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Contact\Delete.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Contact\Details.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Contact\Edit.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Contact\Index.cshtml" />
+  </ItemGroup>
+
+</Project>

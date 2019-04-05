@@ -1,0 +1,66 @@
+﻿@model IEnumerable<ContosoCrm.Common21.Models.Contact>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@*<div class="text-center">
+        <h1 class="display-4">All Contacts</h1>
+        <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    </div>*@
+
+<h1 class="display-4">All Contacts</h1>
+
+<div class="row">
+    @foreach (var contact in Model)
+    {
+        <div class="col-md-4 card">
+            <div class="card-body">
+                <h4 class="card-title">@contact.FirstName @contact.LastName</h4>
+                <h5 class="card-subtitle mb-2 text-muted">@contact.Company</h5>
+                <h6 class="card-subtitle mb-2 text-muted">@contact.ContactType</h6>
+                <h6 class="card-subtitle mb-2 text-muted">@contact.Phone</h6>
+                <h6 class="card-subtitle mb-2 text-muted">@contact.Email</h6>
+                @*<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <a href="#" class="card-link">Card link</a>
+                    <a href="#" class="card-link">Another link</a>*@
+            </div>
+        </div>
+    }
+</div>
+
+@*<table class="table table-dark table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th>Last Name</th>
+                <th>First Name</th>
+                <th>Company</th>
+                <th>Email</th>
+                <th>Phone</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var contact in Model)
+            {
+                <tr>
+                    <td>@contact.ContactType</td>
+                    <td>@contact.LastName</td>
+                    <td>@contact.FirstName</td>
+                    <td>@contact.Company</td>
+                    <td>@contact.Email</td>
+                    <td>@contact.Phone</td>
+                </tr>
+            }
+        </tbody>
+    </table>*@
+@*</div>*@
+
+<div>
+    <p>
+        &nbsp;<br /><strong>Cosmos DB Information:</strong><br />
+        RUs: @ViewBag.TotalRUs<br />
+        Read Region: @ViewBag.ReadEndpoint<br />
+        Write Region: @ViewBag.WriteEndpoint<br/>
+        Consistency Level: @ViewBag.ConsistencyLevel
+    </p>
+</div>
