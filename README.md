@@ -1,7 +1,47 @@
 ﻿# Contoso CRM
-A sample Asp.Net Core Web App using CosmosDB. It emmulates a simple CRM program where contacts, of different types can be viewed, created, edited and deleted.
 
-It is based on the following performance optiomizations:
+A sample Asp.Net Core Web App using CosmosDB. It emmulates a simple CRM program where the user is able to list, create, edit and delete leads, contacts, and customers.
+
+## Contact Model
+
+```
+public class Contact
+    {
+        // This id is automatically created by cosmosdb if it is not set
+        [JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+        [Required]
+        [JsonConverter(typeof(StringEnumConverter))]
+        public ContactType ContactType { get; set; }
+        [Required]
+        public string Company { get; set; }
+        [Required]
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
+        [Required]
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; }
+        [Required]
+        public string Email { get; set; }
+        [Required]
+        public string Phone { get; set; }
+        public string Notes { get; set; }
+    }
+```
+
+## Partition Key
+
+The partition key for this model is: 
+
+**/ContactType**
+
+## Indexing
+
+
+
+## Performance Optiomizations
+
+The application is based on the following performance optiomizations:
 
 https://docs.microsoft.com/en-us/azure/cosmos-db/performance-tips
 

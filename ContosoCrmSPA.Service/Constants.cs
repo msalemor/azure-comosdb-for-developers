@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ContosoCrmApp21
+namespace ContosoCrmSPA
 {
     public class Constants
     {
