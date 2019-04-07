@@ -19,7 +19,7 @@
 
         #region Crud Operations
 
-        public virtual async Task<Tuple<double, T>> GetItemAsync(string id, string partitionKey)
+        public virtual async Task<Tuple<double, string, string, string, T>> GetItemAsync(string id, string partitionKey)
         {
             try
             {
@@ -27,7 +27,11 @@
                     UriFactory.CreateDocumentUri(databaseId, collectionId, id),
                     new RequestOptions { PartitionKey = new PartitionKey(partitionKey) });
                 var response = (T)(dynamic)result.Resource;
-                var tuple = new Tuple<double, T>(result.RequestCharge, response);
+                var tuple = new Tuple<double, string, string, string, T>(result.RequestCharge,
+                                    DocumentDbClientInstance.Client.ReadEndpoint.ToString(),
+                                    DocumentDbClientInstance.Client.WriteEndpoint.ToString(),
+                                    DocumentDbClientInstance.Client.ConsistencyLevel.ToString(),
+                    response);
                 return tuple;
             }
             catch (DocumentClientException e)

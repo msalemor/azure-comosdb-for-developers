@@ -14,6 +14,7 @@ namespace ContosoCrmSPA.Service
     public class Startup
     {
         public static string Region;
+        const string PolicyAllowAll = "AllowAll";
 
         public Startup(IConfiguration configuration, ILoggerFactory loggerFactory)
         {
@@ -27,6 +28,15 @@ namespace ContosoCrmSPA.Service
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options => {
+                options.AddPolicy(PolicyAllowAll,
+                   builder => {
+                       builder.AllowAnyOrigin()
+                      .AllowAnyMethod()
+                      .AllowAnyHeader();
+                   });
+            });
+
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                 .AddJsonOptions(options =>
@@ -54,7 +64,7 @@ namespace ContosoCrmSPA.Service
             {
                 app.UseHsts();
             }
-
+            app.UseCors(PolicyAllowAll);
             //app.UseHttpsRedirection();
             app.UseMvc();
         }

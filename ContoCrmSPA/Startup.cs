@@ -10,6 +10,8 @@ namespace ContoCrmSPA
 {
     public class Startup
     {
+
+        public static string ServiceURI;
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -27,6 +29,8 @@ namespace ContoCrmSPA
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+
+            ServiceURI = Configuration["ServiceURI"];
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,6 +56,7 @@ namespace ContoCrmSPA
                     name: "default",
                     template: "{controller}/{action=Index}/{id?}");
             });
+
 
             app.UseSpa(spa =>
             {

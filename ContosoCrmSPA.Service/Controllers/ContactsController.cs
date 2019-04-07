@@ -58,15 +58,10 @@ namespace ContosoCrmSPA.Service.Controllers
         }
 
         [HttpGet("{id}/{contactType}")]
-        public async Task<ActionResult<Tuple<double, string, string, string, IEnumerable<Contact>>>> Get(string id, string contactType)
+        public async Task<ActionResult<Tuple<double, string, string, string, Contact>>> Get(string id, string contactType)
         {
-            var result = await Repository.GetItemsAsync
-                (
-                    c => c.ContactType == (ContactType)Enum.Parse(typeof(ContactType), contactType, true) && c.Id==id,
-                    null,
-                    contactType.ToString()
-                );
-            return new Tuple<double, string, string, string, IEnumerable<Contact>>(result.Item1, result.Item2, result.Item3, result.Item4, result.Item5.OrderBy(c => c.LastName));
+            var result = await Repository.GetItemAsync(id, contactType);
+            return new Tuple<double, string, string, string, Contact>(result.Item1, result.Item2, result.Item3, result.Item4, result.Item5);
         }
 
         // POST api/values

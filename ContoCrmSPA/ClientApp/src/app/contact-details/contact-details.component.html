@@ -1,0 +1,46 @@
+<div>
+  <h4>{{contactType}} Details</h4>
+  <hr />
+  <dl class="row">
+    <dt class="col-sm-2">
+      Last Name
+    </dt>
+    <dd class="col-sm-10">
+      {{contact.lastName}}
+    </dd>
+    <dt class="col-sm-2">
+      First Name
+    </dt>
+    <dd class="col-sm-10">
+      {{contact.firstName}}
+    </dd>
+    <dt class="col-sm-2">
+      Company
+    </dt>
+    <dd class="col-sm-10">
+      {{contact.company}}
+    </dd>
+    <dt class="col-sm-2">
+      Email
+    </dt>
+    <dd class="col-sm-10">
+      {{contact.email}}
+    </dd>
+    <dt class="col-sm-2">
+      Phone
+    </dt>
+    <dd class="col-sm-10">
+      {{contact.phone}}
+    </dd>
+    <dt class="col-sm-2">
+      Notes
+    </dt>
+    <dd class="col-sm-10">
+      {{contact.notes}}
+    </dd>
+  </dl>
+</div>
+<div>
+  <a [routerLink]="['/contact-list', contactType]">Back to {{contactTypes}}</a> | <a [routerLink]="['/']">Back to all contacts</a>
+</div>
+

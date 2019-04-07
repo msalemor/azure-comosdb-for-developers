@@ -55,7 +55,10 @@ namespace ContosoCrmApp.Controllers
             var result = await Repository.GetItemAsync(id, DefaultContactType.ToString());
             ViewBag.Area = Constants.ContactArea;
             ViewBag.TotalRUs = result.Item1;
-            return View(result.Item2);
+            ViewBag.ReadEndpoint = result.Item2;
+            ViewBag.WriteEndpoint = result.Item3;
+            ViewBag.ConsistencyLevel = result.Item4;
+            return View(result.Item5);
         }
 
         // GET: Lead/Create
