@@ -32,7 +32,7 @@
       <td>{{ contact.email }}</td>
       <td>{{ contact.phone }}</td>
       <td>
-        <a [routerLink]="['/contact-edit', contact.id, contactType]">Edit</a> | <a [routerLink]="['/contact-details', contact.id, contactType]">Details</a> | <a (click)="deleteContact(contact.id)">Delete</a>
+        <a [routerLink]="['/contact-edit', contact.id, contactType]">Edit</a> | <a [routerLink]="['/contact-details', contact.id, contactType]">Details</a> | <a (click)="deleteContact(contact.id, contact.firstName, contact.lastName)">Delete</a>
       </td>
     </tr>
   </tbody>

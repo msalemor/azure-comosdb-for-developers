@@ -13,10 +13,8 @@ export class ContactListComponent {
   public contacts: Contact[];
   public contactType: string;
   public contactTypes: string;
-  httpClient: HttpClient;
 
-  constructor(http: HttpClient, private route: ActivatedRoute, private router: Router) {
-    this.httpClient = http;
+  constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router) {
     this.contactType = this.route.snapshot.paramMap.get("type");
     let serviceUri = 'https://localhost:44300/api/contacts/' + this.contactType;
     this.router.routeReuseStrategy.shouldReuseRoute = function () {
@@ -29,8 +27,15 @@ export class ContactListComponent {
     }, error => console.error(error));
   }
 
-  deleteContact(id: string) {
-    if (confirm('Delete record ' + id + '?')) {
+  deleteContact(id: string, firstName: string, lastName: string) {
+    let serviceUri = `https://localhost:44300/api/contacts/${id}`;
+    if (confirm(`Are you sure you want to delete ${firstName} ${lastName}?`)) {
+      this.http.delete(serviceUri).subscribe(
+        result => {
+          //TODO: Navigate to area
+          this.router.navigateByUrl(`/contact-list/${this.contactType}`);
+        },
+        error => { console.error(error); });
     }
   }
 }
