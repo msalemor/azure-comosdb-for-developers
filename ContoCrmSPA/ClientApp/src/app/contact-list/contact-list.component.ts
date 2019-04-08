@@ -15,7 +15,7 @@ export class ContactListComponent {
   public contactTypes: string;
 
   constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router) {
-    this.contactType = this.route.snapshot.paramMap.get("type");
+    this.contactType = route.snapshot.paramMap.get("type");
     let serviceUri = 'https://localhost:44300/api/contacts/' + this.contactType;
     this.router.routeReuseStrategy.shouldReuseRoute = function () {
       return false;
@@ -23,7 +23,6 @@ export class ContactListComponent {
     http.get<DataItem>(serviceUri).subscribe(result => {
       this.contactTypes = this.contactType + 's';
       this.result = result;
-      this.contacts = result.item5;
     }, error => console.error(error));
   }
 

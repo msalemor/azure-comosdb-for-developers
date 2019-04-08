@@ -2,34 +2,73 @@ import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Contact } from '../interfaces/Contact';
-import { DataItem } from '../interfaces/DataItem';
+import { ContactDetailsResult } from '../interfaces/ContactDetailsResult';
+
+let serviceUri = 'https://localhost:44300/api/contacts';
 
 @Component({
   selector: 'contact-edit',
   templateUrl: './contact-edit.component.html',
 })
 export class ContactEditComponent {
-  public dataItems: DataItem;
-  public contacts: Contact[];
+  private result: ContactDetailsResult;
+  public contact: Contact;
   public contactType: string;
-  httpClient: HttpClient;
+  private id: string;
 
-  constructor(http: HttpClient, private route: ActivatedRoute, private router: Router) {
-    this.httpClient = http;
+  constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router) {
     this.contactType = this.route.snapshot.paramMap.get("type");
-    let serviceUri = 'https://localhost:44300/api/contacts/' + this.contactType;
+    this.id = this.route.snapshot.paramMap.get("id");
     this.router.routeReuseStrategy.shouldReuseRoute = function () {
       return false;
     };
-    http.get<DataItem>(serviceUri).subscribe(result => {
-      this.contactType += 's';
-      this.dataItems = result;
-      this.contacts = result.item5;
-    }, error => console.error(error));
+
+    // If editing load the contact
+    if (this.id !== null) {
+      let uri = serviceUri + `/${this.id}/${this.contactType}`;
+      http.get<ContactDetailsResult>(uri).subscribe(result => {
+        this.result = result;
+        this.contact = result.item5;
+      }, error => console.error(error));
+    } else {
+      this.contact = {
+        id: null,
+        contactType: this.contactType,
+        company: null,
+        lastName: null,
+        firstName: null,
+        email: null,
+        phone: null,
+        notes: null
+      };
+    }
+
   }
 
-  submit(id: string) {
-    if (confirm('Delete record ' + id + '?')) {
+  submit() {
+    if (this.contact.id === null) {
+      // Creating
+      this.contact.id = null;
+      this.contact.contactType = this.contactType;
+      this.http.post(serviceUri, this.contact).subscribe(
+        result => {
+          console.info("Record created");
+          this.router.navigateByUrl(`/contact-list/${this.contactType}`);
+        },
+        error => {
+          console.error(error);
+        })
+    } else {
+      // editing
+      let uri = `${serviceUri}/${this.id}`;
+      this.http.put(uri, this.contact).subscribe(
+        result => {
+          console.info("Record updated");
+          this.router.navigateByUrl(`/contact-list/${this.contactType}`);
+        },
+        error => {
+          console.error(error)
+        });
     }
   }
 }

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Contact } from '../interfaces/Contact';
-import { ContactDetailsResult } from '../interfaces/ContactDefailsResult';
+import { ContactDetailsResult } from '../interfaces/ContactDetailsResult';
 
 @Component({
   selector: 'contact-details',

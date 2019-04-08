@@ -10,7 +10,6 @@ import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { ContactListComponent } from './contact-list/contact-list.component';
-import { ContactCreateComponent } from './contact-create/contact-create.component';
 import { ContactDetailsComponent } from './contact-details/contact-details.component';
 import { ContactEditComponent } from './contact-edit/contact-edit.component';
 
@@ -22,7 +21,6 @@ import { ContactEditComponent } from './contact-edit/contact-edit.component';
     CounterComponent,
     FetchDataComponent,
     ContactListComponent,
-    ContactCreateComponent,
     ContactDetailsComponent,
     ContactEditComponent
   ],
@@ -35,9 +33,9 @@ import { ContactEditComponent } from './contact-edit/contact-edit.component';
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
       { path: 'contact-list/:type', component: ContactListComponent },
-      { path: 'contact-create/:type', component: ContactCreateComponent },
+      { path: 'contact-edit/:type', component: ContactEditComponent },
       { path: 'contact-details/:id/:type', component: ContactDetailsComponent },
-      { path: 'contact-edit/:id//:type/:id', component: ContactEditComponent },
+      { path: 'contact-edit/:id/:type', component: ContactEditComponent },
     ])
   ],
   providers: [],

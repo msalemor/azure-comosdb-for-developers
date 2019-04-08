@@ -1,9 +1,68 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <title>contact-edit.component</title>
-</head>
-<body>
-    
-</body>
-</html>
+<h4>Create {{ contactType }}</h4>
+<hr />
+<div class="row">
+  <div class="col-md-4">
+    <form id="frmCreateOrEdit" name="frmCreateorEdit" novalidate>
+      <!--<div asp-validation-summary="ModelOnly" class="text-danger"></div>-->
+      <div class="form-group">
+        <label for="Company" class="control-label">Company</label>
+        <input type="text" id="company" name="company" class="form-control" [(ngModel)]="contact.company" required />
+        <!--<span asp-validation-for="Company" class="text-danger"></span>-->
+      </div>
+      <div class="form-group">
+        <label for="lastName" class="control-label">Last Name</label>
+        <input type="text" id="lastName" name="lastName" class="form-control" [(ngModel)]="contact.lastName" required />
+        <!--<span asp-validation-for="Company" class="text-danger"></span>-->
+      </div>
+      <div class="form-group">
+        <label for="firstName" class="control-label">First Name</label>
+        <input type="text" id="firstName" name="firstName" class="form-control" [(ngModel)]="contact.firstName" required />
+        <!--<span asp-validation-for="Company" class="text-danger"></span>-->
+      </div>
+      <div class="form-group">
+        <label for="email" class="control-label">Email</label>
+        <input type="email" id="email" name="email" class="form-control" [(ngModel)]="contact.email" required />
+        <!--<span asp-validation-for="Company" class="text-danger"></span>-->
+      </div>
+      <div class="form-group">
+        <label for="phone" class="control-label">Phone</label>
+        <input type="tel" id="phone" name="phone" class="form-control" [(ngModel)]="contact.phone" required />
+        <!--<span asp-validation-for="Company" class="text-danger"></span>-->
+      </div>
+      <div class="form-group">
+        <label for="notes" class="control-label">Notes</label>
+        <textarea id="notes" name="notes" class="form-control" [(ngModel)]="contact.notes"></textarea>
+        <!--<span asp-validation-for="Company" class="text-danger"></span>-->
+      </div>
+      <!--<div class="form-group">
+    <label asp-for="LastName" class="control-label"></label>
+    <input asp-for="LastName" class="form-control" />
+    <span asp-validation-for="LastName" class="text-danger"></span>
+  </div>
+  <div class="form-group">
+    <label asp-for="FirstName" class="control-label"></label>
+    <input asp-for="FirstName" class="form-control" />
+    <span asp-validation-for="FirstName" class="text-danger"></span>
+  </div>
+  <div class="form-group">
+    <label asp-for="Email" class="control-label"></label>
+    <input asp-for="Email" class="form-control" />
+    <span asp-validation-for="Email" class="text-danger"></span>
+  </div>
+  <div class="form-group">
+    <label asp-for="Phone" class="control-label"></label>
+    <input asp-for="Phone" class="form-control" />
+    <span asp-validation-for="Phone" class="text-danger"></span>
+  </div>
+  <div class="form-group">
+    <label asp-for="Notes" class="control-label"></label>
+    <textarea asp-for="Notes" class="form-control" rows="5"></textarea>
+    <span asp-validation-for="Notes" class="text-danger"></span>
+  </div>-->
+      <div class="form-group">
+        <input type="button" value="Create" class="btn btn-primary" (click)="submit()" *ngIf="!contact.id" />
+        <input type="button" value="Save" class="btn btn-primary" (click)="submit()" *ngIf="contact.id" />
+      </div>
+    </form>
+  </div>
+</div>
