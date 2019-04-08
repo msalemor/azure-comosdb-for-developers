@@ -26,7 +26,7 @@ namespace ContosoCrmApp.Controllers
         {
             var result = await Repository.GetItemsAsync
                 (
-                    c => c.ContactType == DefaultContactType,
+                    c => true,
                     c => new Contact
                     {
                         Id = c.Id,
@@ -137,7 +137,10 @@ namespace ContosoCrmApp.Controllers
             var result = await Repository.GetItemAsync(id, DefaultContactType.ToString());
             ViewBag.Area = Constants.LeadArea;
             ViewBag.TotalRUs = result.Item1;
-            return View(result.Item2);
+            ViewBag.ReadEndpoint = result.Item2;
+            ViewBag.WriteEndpoint = result.Item3;
+            ViewBag.ConsistencyLevel = result.Item4;
+            return View(result.Item5);
         }
 
         // POST: Lead/Delete/5
