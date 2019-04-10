@@ -15,15 +15,15 @@ On every request, the app displays:
 - The consistency level
 
 
-## Why CosmosDB
+## Why Cosmos DB?
 
 - CosmosDB is the first globally distributed database that offers SLA on availability, throughput and latency. 
 - If configured with geo-replication, CosmosDB can offer up to 99.999% availability. Furthermore, CosmosDB allows you to work with a number of APIs including SQL (formerly DocumentDB), MongoDB, Cassandra and Gremlin.
-- CosmosDB can be configured with different consistency levels which are suitable for a number of scenarios.
-- CosmosDB can be used both in hot storage and cold storage scenarios.
-- CosmosDB servers most requests in under 10ms. It is so fast it can be used on globally distributted caching.
+- Cosmos DB can be configured with different consistency levels which are suitable for a number of scenarios.
+- Cosmos DB can be used both in hot storage and cold storage scenarios.
+- Cosmos DB servers most requests in under 10ms. It is so fast it can be used on globally distributted caching.
 
-## Performance Optiomizations
+## Application Performance Optiomizations
 
 The application is based on the following performance optiomizations:
 
@@ -98,7 +98,7 @@ while (query.HasMoreResults)
 
 # Important Cosmos DB Concepts
 
-## Introduction And SLAs
+## Cosmos Consistency, Models and SLAs
 
 Azure Cosmos DB is Microsoft’s globally distributed multi-model database service. It offers turnkey global distribution across any number of Azure regions by transparently scaling and replicating your data wherever your users are. The service offers comprehensive **99.99% SLAs which covers the guarantees for throughput, consistency, availability and latency** for the Cosmos DB Database Accounts scoped to a single Azure region configured with any of the five Consistency Levels or Database Accounts spanning multiple Azure regions, configured with any of the four relaxed Consistency Levels. Azure Cosmos DB allows configuring multiple Azure regions as writable endpoints for a Database Account. In this configuration, Cosmos DB **offers 99.999% SLA** for both read and write availability. 
 
@@ -165,7 +165,7 @@ If EnableEndpointDiscovery is set to false, the value of this property is ignore
 
 ## RUs
 
-Azure Cosmos DB is offered in units of solid-state drive (SSD) backed storage and throughput. Request units measure Azure Cosmos DB throughput per second, and request unit consumption varies by operation and JSON document. Use this calculator to determine the number of request units per second (RU/s) and the amount of data storage needed by your application.
+Azure Cosmos DB is offered in units of solid-state drive (SSD) backed storage and throughput. Request units measure Azure Cosmos DB throughput per second, and request unit consumption varies by operation and JSON document. 
 
 ### RU Calculator
 
