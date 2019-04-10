@@ -2,6 +2,12 @@
 
 A sample Asp.Net Core Web App using CosmosDB. It emmulates a simple CRM program where the user is able to list, create, edit and delete leads, contacts, and customers.
 
+There are three version of the application:
+
+- .Net Core 2.2 MVC
+- .Net Core 2.1 MVC
+- .Net Core 2.1 with Angular 6
+
 ## Why CosmosDB
 
 - CosmosDB is the first globally distributed database that offers SLA on availability, throughput and latency. 
