@@ -10,46 +10,6 @@ A sample Asp.Net Core Web App using CosmosDB. It emmulates a simple CRM program 
 - CosmosDB can be used both in hot storage and cold storage scenarios.
 - CosmosDB servers most requests in under 10ms. It is so fast it can be used on globally distributted caching.
 
-## Contact Model
-
-```
-public class Contact
-    {
-        // This id is automatically created by cosmosdb if it is not set
-        [JsonProperty(PropertyName = "id")]
-        public string Id { get; set; }
-
-        [JsonProperty(PropertyName = "contactType")]
-        [Required]
-        [JsonConverter(typeof(StringEnumConverter))]
-        public ContactType ContactType { get; set; }
-
-        [JsonProperty(PropertyName = "company")]
-        [Required]
-        public string Company { get; set; }
-
-        [JsonProperty(PropertyName = "lastName")]
-        [Required]
-        [Display(Name = "Last Name")]
-        public string LastName { get; set; }
-
-        [JsonProperty(PropertyName = "firstName")]
-        [Required]
-        [Display(Name = "First Name")]
-        public string FirstName { get; set; }
-
-        [JsonProperty(PropertyName = "email")]
-        [Required]
-        public string Email { get; set; }
-
-        [JsonProperty(PropertyName = "phone")]
-        [Required]
-        public string Phone { get; set; }
-
-        [JsonProperty(PropertyName = "notes")]
-        public string Notes { get; set; }
-    }
-```
 
 ## Partition Key
 
@@ -240,3 +200,45 @@ Choosing a partition key is an important decision that will affect your applicat
 ### More About Paritions
 
 https://docs.microsoft.com/en-us/azure/cosmos-db/partitioning-overview
+
+## Contact Model
+
+```
+public class Contact
+    {
+        // This id is automatically created by cosmosdb if it is not set
+        [JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+        [JsonProperty(PropertyName = "contactType")]
+        [Required]
+        [JsonConverter(typeof(StringEnumConverter))]
+        public ContactType ContactType { get; set; }
+
+        [JsonProperty(PropertyName = "company")]
+        [Required]
+        public string Company { get; set; }
+
+        [JsonProperty(PropertyName = "lastName")]
+        [Required]
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
+
+        [JsonProperty(PropertyName = "firstName")]
+        [Required]
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; }
+
+        [JsonProperty(PropertyName = "email")]
+        [Required]
+        public string Email { get; set; }
+
+        [JsonProperty(PropertyName = "phone")]
+        [Required]
+        public string Phone { get; set; }
+
+        [JsonProperty(PropertyName = "notes")]
+        public string Notes { get; set; }
+    }
+```
+
