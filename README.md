@@ -19,7 +19,9 @@ A logical partition consists of a set of items that have the same partition key.
 
 https://docs.microsoft.com/en-us/azure/cosmos-db/partition-data
 
-**/contactType**
+#### Application Partiotion
+
+Cotoso CRM uses the following patition key: **/contactType**
 
 ## Indexing
 
