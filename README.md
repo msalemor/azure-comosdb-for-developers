@@ -2,6 +2,10 @@
 
 A sample Asp.Net Core Web App using CosmosDB. It emmulates a simple CRM program where the user is able to list, create, edit and delete leads, contacts, and customers.
 
+## Why CosmosDB
+
+CosmosDB is the first globally distributed database that offers SLA on availability, throughput and latency. If configured with geo-replication, CosmosDB can offer up to 99.999% availability. Furthermore, CosmosDB offer
+
 ## Contact Model
 
 ```
@@ -10,21 +14,35 @@ public class Contact
         // This id is automatically created by cosmosdb if it is not set
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
+
+        [JsonProperty(PropertyName = "contactType")]
         [Required]
         [JsonConverter(typeof(StringEnumConverter))]
         public ContactType ContactType { get; set; }
+
+        [JsonProperty(PropertyName = "company")]
         [Required]
         public string Company { get; set; }
+
+        [JsonProperty(PropertyName = "lastName")]
         [Required]
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
+
+        [JsonProperty(PropertyName = "firstName")]
         [Required]
         [Display(Name = "First Name")]
         public string FirstName { get; set; }
+
+        [JsonProperty(PropertyName = "email")]
         [Required]
         public string Email { get; set; }
+
+        [JsonProperty(PropertyName = "phone")]
         [Required]
         public string Phone { get; set; }
+
+        [JsonProperty(PropertyName = "notes")]
         public string Notes { get; set; }
     }
 ```
@@ -33,11 +51,13 @@ public class Contact
 
 The partition key for this model is: 
 
-**/ContactType**
+**/contactType**
 
 ## Indexing
 
+By default, CosmosDB indexes every attribute in the JSON document is indexed. This can have an impact on both performace and RU consumption. 
 
+In the ContosoCRM application, it is not expected that users will search the notes attribute of the document, therefore it has been disabled.
 
 ## Performance Optiomizations
 
