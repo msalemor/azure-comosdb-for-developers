@@ -8,6 +8,13 @@ There are three version of the application:
 - .Net Core 2.1 MVC
 - .Net Core 2.1 with Angular 6
 
+On every request, the app displays:
+
+- The consumed RUs
+- The read and write region
+- The consistency level
+
+
 ## Why CosmosDB
 
 - CosmosDB is the first globally distributed database that offers SLA on availability, throughput and latency. 
@@ -16,30 +23,11 @@ There are three version of the application:
 - CosmosDB can be used both in hot storage and cold storage scenarios.
 - CosmosDB servers most requests in under 10ms. It is so fast it can be used on globally distributted caching.
 
-
-## Partition Key
-
-A logical partition consists of a set of items that have the same partition key. In Azure Cosmos DB, a container is the fundamental unit of scalability. Data that's added to the container and the throughput that you provision on the container are automatically (horizontally) partitioned across a set of logical partitions. Data and throughput are partitioned based on the partition key you specify for the Azure Cosmos container.
-
-### More on partitioning
-
-https://docs.microsoft.com/en-us/azure/cosmos-db/partition-data
-
-#### Application Partiotion
-
-Cotoso CRM uses the following patition key: **/contactType**
-
-## Indexing
-
-By default, CosmosDB indexes every attribute in the JSON document is indexed. This can have an impact on both performace and RU consumption. 
-
-In the ContosoCRM application, it is not expected that users will search the notes attribute of the document, therefore it has been disabled.
-
 ## Performance Optiomizations
 
 The application is based on the following performance optiomizations:
 
-https://docs.microsoft.com/en-us/azure/cosmos-db/performance-tips
+- https://docs.microsoft.com/en-us/azure/cosmos-db/performance-tips
 
 # Code Optimizations:
 
@@ -208,6 +196,25 @@ Choosing a partition key is an important decision that will affect your applicat
 ### More About Paritions
 
 https://docs.microsoft.com/en-us/azure/cosmos-db/partitioning-overview
+
+## Partition Key
+
+A logical partition consists of a set of items that have the same partition key. In Azure Cosmos DB, a container is the fundamental unit of scalability. Data that's added to the container and the throughput that you provision on the container are automatically (horizontally) partitioned across a set of logical partitions. Data and throughput are partitioned based on the partition key you specify for the Azure Cosmos container.
+
+### More on partitioning
+
+https://docs.microsoft.com/en-us/azure/cosmos-db/partition-data
+
+#### Application Partiotion
+
+Cotoso CRM uses the following patition key: **/contactType**
+
+## Indexing
+
+By default, CosmosDB indexes every attribute in the JSON document is indexed. This can have an impact on both performace and RU consumption. 
+
+In the ContosoCRM application, it is not expected that users will search the notes attribute of the document, therefore it has been disabled.
+
 
 ## Contact Model
 
