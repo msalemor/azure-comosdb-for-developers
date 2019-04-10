@@ -6,6 +6,7 @@ A sample Asp.Net Core Web App using CosmosDB. It emmulates a simple CRM program 
 
 - CosmosDB is the first globally distributed database that offers SLA on availability, throughput and latency. 
 - If configured with geo-replication, CosmosDB can offer up to 99.999% availability. Furthermore, CosmosDB allows you to work with a number of APIs including SQL (formerly DocumentDB), MongoDB, Cassandra and Gremlin.
+- CosmosDB can be configured with different consistency levels which are suitable for a number of scenarios.
 - CosmosDB can be used both in hot storage and cold storage scenarios.
 - CosmosDB servers most requests in under 10ms. It is so fast it can be used on globally distributted caching.
 
