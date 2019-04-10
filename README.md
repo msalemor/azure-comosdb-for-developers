@@ -2,42 +2,38 @@
 
 A sample Asp.Net Core Web App using CosmosDB. It emmulates a simple CRM program where the user is able to list, create, edit and delete leads, contacts, and customers.
 
-## Contact Model
+There are three version of the application:
 
-```
-public class Contact
-    {
-        // This id is automatically created by cosmosdb if it is not set
-        [JsonProperty(PropertyName = "id")]
-        public string Id { get; set; }
-        [Required]
-        [JsonConverter(typeof(StringEnumConverter))]
-        public ContactType ContactType { get; set; }
-        [Required]
-        public string Company { get; set; }
-        [Required]
-        [Display(Name = "Last Name")]
-        public string LastName { get; set; }
-        [Required]
-        [Display(Name = "First Name")]
-        public string FirstName { get; set; }
-        [Required]
-        public string Email { get; set; }
-        [Required]
-        public string Phone { get; set; }
-        public string Notes { get; set; }
-    }
-```
+- .Net Core 2.2 MVC
+- .Net Core 2.1 MVC
+- .Net Core 2.1 with Angular 6
+
+## Why CosmosDB
+
+- CosmosDB is the first globally distributed database that offers SLA on availability, throughput and latency. 
+- If configured with geo-replication, CosmosDB can offer up to 99.999% availability. Furthermore, CosmosDB allows you to work with a number of APIs including SQL (formerly DocumentDB), MongoDB, Cassandra and Gremlin.
+- CosmosDB can be configured with different consistency levels which are suitable for a number of scenarios.
+- CosmosDB can be used both in hot storage and cold storage scenarios.
+- CosmosDB servers most requests in under 10ms. It is so fast it can be used on globally distributted caching.
+
 
 ## Partition Key
 
-The partition key for this model is: 
+A logical partition consists of a set of items that have the same partition key. In Azure Cosmos DB, a container is the fundamental unit of scalability. Data that's added to the container and the throughput that you provision on the container are automatically (horizontally) partitioned across a set of logical partitions. Data and throughput are partitioned based on the partition key you specify for the Azure Cosmos container.
 
-**/ContactType**
+### More on partitioning
+
+https://docs.microsoft.com/en-us/azure/cosmos-db/partition-data
+
+#### Application Partiotion
+
+Cotoso CRM uses the following patition key: **/contactType**
 
 ## Indexing
 
+By default, CosmosDB indexes every attribute in the JSON document is indexed. This can have an impact on both performace and RU consumption. 
 
+In the ContosoCRM application, it is not expected that users will search the notes attribute of the document, therefore it has been disabled.
 
 ## Performance Optiomizations
 
@@ -212,3 +208,45 @@ Choosing a partition key is an important decision that will affect your applicat
 ### More About Paritions
 
 https://docs.microsoft.com/en-us/azure/cosmos-db/partitioning-overview
+
+## Contact Model
+
+```
+public class Contact
+    {
+        // This id is automatically created by cosmosdb if it is not set
+        [JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+        [JsonProperty(PropertyName = "contactType")]
+        [Required]
+        [JsonConverter(typeof(StringEnumConverter))]
+        public ContactType ContactType { get; set; }
+
+        [JsonProperty(PropertyName = "company")]
+        [Required]
+        public string Company { get; set; }
+
+        [JsonProperty(PropertyName = "lastName")]
+        [Required]
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
+
+        [JsonProperty(PropertyName = "firstName")]
+        [Required]
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; }
+
+        [JsonProperty(PropertyName = "email")]
+        [Required]
+        public string Email { get; set; }
+
+        [JsonProperty(PropertyName = "phone")]
+        [Required]
+        public string Phone { get; set; }
+
+        [JsonProperty(PropertyName = "notes")]
+        public string Notes { get; set; }
+    }
+```
+
