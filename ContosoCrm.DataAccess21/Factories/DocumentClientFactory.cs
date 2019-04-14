@@ -1,10 +1,10 @@
-﻿namespace ContosoCrm.DataAccess21.Helpers
+﻿namespace ContosoCrm.DataAccess21.Factories
 {
     using Microsoft.Azure.Documents;
     using Microsoft.Azure.Documents.Client;
     using System;
 
-    public static class DocumentDbClientInstance
+    public static class DocumentClientFactory
     {
         private static DocumentClient client;
         public static string EndpointUri;

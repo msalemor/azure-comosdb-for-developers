@@ -1,5 +1,6 @@
 ﻿namespace ContosoCrm.DataAccess21.Helpers
 {
+    using ContosoCrm.DataAccess21.Factories;
     using ContosoCrm.DataAccess21.Interfaces;
     using Microsoft.Azure.Documents;
     using Microsoft.Azure.Documents.Client;
@@ -23,14 +24,14 @@
         {
             try
             {
-                var result = await DocumentDbClientInstance.Client.ReadDocumentAsync(
+                var result = await DocumentClientFactory.Client.ReadDocumentAsync(
                     UriFactory.CreateDocumentUri(databaseId, collectionId, id),
                     new RequestOptions { PartitionKey = new PartitionKey(partitionKey) });
                 var response = (T)(dynamic)result.Resource;
                 var tuple = new Tuple<double, string, string, string, T>(result.RequestCharge,
-                                    DocumentDbClientInstance.Client.ReadEndpoint.ToString(),
-                                    DocumentDbClientInstance.Client.WriteEndpoint.ToString(),
-                                    DocumentDbClientInstance.Client.ConsistencyLevel.ToString(),
+                                    DocumentClientFactory.Client.ReadEndpoint.ToString(),
+                                    DocumentClientFactory.Client.WriteEndpoint.ToString(),
+                                    DocumentClientFactory.Client.ConsistencyLevel.ToString(),
                     response);
                 return tuple;
             }
@@ -65,7 +66,7 @@
 
             if (selector is null)
             {
-                query = DocumentDbClientInstance.Client.CreateDocumentQuery<T>(
+                query = DocumentClientFactory.Client.CreateDocumentQuery<T>(
                     UriFactory.CreateDocumentCollectionUri(databaseId, collectionId),
                     options)
                     .Where(predicate)
@@ -73,7 +74,7 @@
             }
             else
             {
-                query = DocumentDbClientInstance.Client.CreateDocumentQuery<T>(
+                query = DocumentClientFactory.Client.CreateDocumentQuery<T>(
                     UriFactory.CreateDocumentCollectionUri(databaseId, collectionId),
                     options)
                     .Where(predicate)
@@ -97,26 +98,26 @@
             }
 
             return new Tuple<double, string, string, string, IEnumerable<T>>(totalRUs,
-                DocumentDbClientInstance.Client.ReadEndpoint.ToString(),
-                DocumentDbClientInstance.Client.WriteEndpoint.ToString(),
-                DocumentDbClientInstance.Client.ConsistencyLevel.ToString(),
+                DocumentClientFactory.Client.ReadEndpoint.ToString(),
+                DocumentClientFactory.Client.WriteEndpoint.ToString(),
+                DocumentClientFactory.Client.ConsistencyLevel.ToString(),
                 results);
         }
 
         public virtual async Task<Document> CreateItemAsync(T item)
         {
-            return await DocumentDbClientInstance.Client.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(databaseId, collectionId), item);
+            return await DocumentClientFactory.Client.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(databaseId, collectionId), item);
         }
 
         public virtual async Task<Document> UpdateItemAsync(string id, T item)
         {
-            return await DocumentDbClientInstance.Client.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(databaseId, collectionId, id), item);
+            return await DocumentClientFactory.Client.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(databaseId, collectionId, id), item);
         }
 
         public virtual async Task DeleteItemAsync(string id, string partionKey)
         {
             var options = new RequestOptions { PartitionKey = new PartitionKey(partionKey) };
-            await DocumentDbClientInstance.Client.DeleteDocumentAsync(UriFactory.CreateDocumentUri(databaseId, collectionId, id), options);
+            await DocumentClientFactory.Client.DeleteDocumentAsync(UriFactory.CreateDocumentUri(databaseId, collectionId, id), options);
         }
 
         #endregion
@@ -138,7 +139,7 @@
             // Notice that the current version of the API only allows to use the SelfLink for the collection
             // to retrieve its associated offer
             Offer existingOffer = null;
-            var offerQuery = DocumentDbClientInstance.Client.CreateOfferQuery()
+            var offerQuery = DocumentClientFactory.Client.CreateOfferQuery()
                 .Where(o => o.ResourceLink == collectionSelfLink)
                 .AsDocumentQuery();
             while (offerQuery.HasMoreResults)
@@ -154,7 +155,7 @@
             }
             // Set the desired throughput to newOfferThroughput RU/s for the new offer built based on the current offer
             var newOffer = new OfferV2(existingOffer, newOfferThroughput);
-            var replaceOfferResponse = await DocumentDbClientInstance.Client.ReplaceOfferAsync(newOffer);
+            var replaceOfferResponse = await DocumentClientFactory.Client.ReplaceOfferAsync(newOffer);
             return replaceOfferResponse.Resource;
         }
 
@@ -162,7 +163,7 @@
         {
             try
             {
-                await DocumentDbClientInstance.Client.ReadDatabaseAsync(UriFactory.CreateDatabaseUri(databaseId));
+                await DocumentClientFactory.Client.ReadDatabaseAsync(UriFactory.CreateDatabaseUri(databaseId));
             }
             catch (DocumentClientException e)
             {
@@ -172,7 +173,7 @@
                     {
                         ConsistencyLevel = ConsistencyLevel.Session
                     };
-                    await DocumentDbClientInstance.Client.CreateDatabaseAsync(new Database { Id = databaseId }, options);
+                    await DocumentClientFactory.Client.CreateDatabaseAsync(new Database { Id = databaseId }, options);
                 }
                 else
                 {
@@ -185,7 +186,7 @@
         {
             try
             {
-                await DocumentDbClientInstance.Client.ReadDocumentCollectionAsync(UriFactory.CreateDocumentCollectionUri(databaseId, collectionId));
+                await DocumentClientFactory.Client.ReadDocumentCollectionAsync(UriFactory.CreateDocumentCollectionUri(databaseId, collectionId));
             }
             catch (DocumentClientException e)
             {
@@ -207,7 +208,7 @@
 
                 if (e.StatusCode == System.Net.HttpStatusCode.NotFound)
                 {
-                    await DocumentDbClientInstance.Client.CreateDocumentCollectionAsync(
+                    await DocumentClientFactory.Client.CreateDocumentCollectionAsync(
                         UriFactory.CreateDatabaseUri(databaseId),
                         documentCollection,
                         options);

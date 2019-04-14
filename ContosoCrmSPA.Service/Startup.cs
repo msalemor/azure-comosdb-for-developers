@@ -1,4 +1,5 @@
 ﻿using ContosoCrm.Common21.Models;
+using ContosoCrm.DataAccess21.Factories;
 using ContosoCrm.DataAccess21.Helpers;
 using ContosoCrm.DataAccess21.Interfaces;
 using ContosoCrm.DataAccess21.Repositories;
@@ -45,9 +46,9 @@ namespace ContosoCrmSPA.Service
                     options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
                 });
 
-            DocumentDbClientInstance.EndpointUri = Configuration["EndpointUri"];
-            DocumentDbClientInstance.AuthKey = Configuration["AuthKey"];
-            DocumentDbClientInstance.PreferredLocations = Configuration["PreferredLocations"];
+            DocumentClientFactory.EndpointUri = Configuration["EndpointUri"];
+            DocumentClientFactory.AuthKey = Configuration["AuthKey"];
+            DocumentClientFactory.PreferredLocations = Configuration["PreferredLocations"];
             Region = Configuration["Region"];
 
             services.AddTransient<IDocumentDbHelper<Contact>, ContactDocumentDbRepository>();
