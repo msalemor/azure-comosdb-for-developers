@@ -11,24 +11,25 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContosoCrm.DataAccess", "Co
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0EFE8AC5-6F5F-4FE3-8944-98220377B0B3}"
 	ProjectSection(SolutionItems) = preProject
+		JavaSpringMaven-README.md = JavaSpringMaven-README.md
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContosoCrmApp21", "ContosoCrmApp21\ContosoCrmApp21.csproj", "{D7C46A4F-0B09-46EE-B017-8A312B509A26}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContosoCrmApp21", "ContosoCrmApp21\ContosoCrmApp21.csproj", "{D7C46A4F-0B09-46EE-B017-8A312B509A26}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContosoCrm.Common21", "ContosoCrm.Common21\ContosoCrm.Common21.csproj", "{955A111F-C74E-459C-9093-3F856F7946AA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContosoCrm.Common21", "ContosoCrm.Common21\ContosoCrm.Common21.csproj", "{955A111F-C74E-459C-9093-3F856F7946AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContosoCrm.DataAccess21", "ContosoCrm.DataAccess21\ContosoCrm.DataAccess21.csproj", "{8BD45E30-1CED-428C-85EE-88C5D73A7E5B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContosoCrm.DataAccess21", "ContosoCrm.DataAccess21\ContosoCrm.DataAccess21.csproj", "{8BD45E30-1CED-428C-85EE-88C5D73A7E5B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NetCore2.2", "NetCore2.2", "{5D7A8FBF-E4F2-4E9F-A265-A57647C132F2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NetCore2.1", "NetCore2.1", "{C81045F3-E08A-4156-9B90-6C838BEE1228}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Angular21", "Angular21", "{2480E37E-620D-448F-96D6-775E92E64F9B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Angular2.1", "Angular2.1", "{2480E37E-620D-448F-96D6-775E92E64F9B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContoCrmSPA", "ContoCrmSPA\ContoCrmSPA.csproj", "{EB58F232-5C4F-42FD-9E39-2B67777F3D40}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContoCrmSPA", "ContoCrmSPA\ContoCrmSPA.csproj", "{EB58F232-5C4F-42FD-9E39-2B67777F3D40}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContosoCrmSPA.Service", "ContosoCrmSPA.Service\ContosoCrmSPA.Service.csproj", "{CBC3F89D-3CDB-4805-A7A8-FD8B023D5E94}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContosoCrmSPA.Service", "ContosoCrmSPA.Service\ContosoCrmSPA.Service.csproj", "{CBC3F89D-3CDB-4805-A7A8-FD8B023D5E94}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
