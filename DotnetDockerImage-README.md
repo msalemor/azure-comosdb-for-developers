@@ -8,12 +8,12 @@ In Visual Studio, you can create docker images easily. For this guide the requir
 - dotnet CLI
 - docker
 
-## Using the dotnet CLI to create and build a solution
+## Using the dotnet CLI to create, restore, build and publish the web project in the solution
 
 The following commands will create a .Net Core solution, two class library projects and a MVC project. 
-Once the projects are created, reference are added between the projects. 
+Once the projects are created, references are added between the projects. 
 Finally, the projects are added to the solution. 
-The restore is at the solution level and it will restore all packages for all the projects in the solution.
+The packages are then restored at the solution level, restoring all the packages in the projects.
 Finally, the solution is built or published.
 
 > **Note:** There are a lot of examples out on the Internet about publising a single .Net Core project, but this example is more enterpise where the solution has many projects and references.
@@ -53,15 +53,31 @@ dotnet build ContosoCrmSolution.sln --configuration Release
 dotnet publish ContosoCrm.WebApp/ContosoCrm.WebApp.csproj -o ../build-debug
 # Production
 dotnet publish ContosoCrm.WebApp/ContosoCrm.WebApp.csproj -o ../build-release -c Release
+```
 
+If you run the tree command (```tree -L 1```), the output should look something like this:
+
+```text
+.
+|- ContosoCrmSolution.sln
+|- ContosoCrm.Common
+|- ContosoCrm.Domain
+|- ContosoCrm.WebApp
+```
+
+Test the app:
+
+```bash
 # To run the web app
 cd ContosoCrm.WebApp
 dotnet run
 ```
 
+
+
 ## Docker file to build an image
 
-Add the following commands to a Docker file at the solution level to create a docker image of the ContosoCrm.WebApp:
+Add the following commands to a Docker file (```nano Dockerfile```) at the solution level to create a docker image of the ContosoCrm.WebApp:
 
 > **Note:** This is a two step process where solution is first published using a build environment, and then the output it is copied to a runtime environment.
 
