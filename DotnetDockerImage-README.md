@@ -1,4 +1,4 @@
-﻿# Guide to create a Linux .Net Core Docker Image from a complex solution
+﻿# Guide to create a Linux Docker Image from a complex .Net Core solution
 
 ## Requirements
 
