@@ -1,4 +1,4 @@
-﻿# Create a Linux .Net Core Docker Image
+﻿# Guide to create a Linux .Net Core Docker Image
 
 ## Requirements
 
