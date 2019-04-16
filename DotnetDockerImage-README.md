@@ -59,10 +59,11 @@ cd ContosoCrm.WebApp
 dotnet run
 ```
 
-## Docker file to build
+## Docker file to build an image
 
-Add the following commands to a Docker file at the solution level to create a docker image of the ContosoCrm.WebApp.
-This is a two step process where solution is first published using a build environment, and then the output it is copied to a runtime environment.
+Add the following commands to a Docker file at the solution level to create a docker image of the ContosoCrm.WebApp:
+
+> **Note:** This is a two step process where solution is first published using a build environment, and then the output it is copied to a runtime environment.
 
 ```yaml
 FROM microsoft/dotnet:sdk AS build-env
@@ -82,4 +83,16 @@ FROM microsoft/dotnet:aspnetcore-runtime
 WORKDIR /app
 COPY --from=build-env /app/ContosoCrm.WebApp/out .
 ENTRYPOINT ["dotnet", "ContosoCrm.WebApp.dll"]
+```
+
+### Build the image
+
+```
+docker build -t contosocrmapp:prod-1.0.0 .
+```
+
+### Test the image
+
+```
+docker run --rm -p 8080:80 --name contosocrm contosocrmapp:prod-1.0.0
 ```
