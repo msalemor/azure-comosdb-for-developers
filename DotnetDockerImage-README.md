@@ -1,4 +1,9 @@
-﻿# Docker .Net Core Image
+﻿# .Net Core Image
+
+## Requirements
+
+- Install donet CLI
+- Install docker
 
 ## Using the dotnet CLI to create and build a solution
 
