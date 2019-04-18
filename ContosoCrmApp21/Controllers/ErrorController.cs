@@ -1,44 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.ApplicationInsights;
+﻿using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
 
 namespace ContosoCrmApp21.Controllers
 {
     public class ErrorController : Controller
     {
         private ILogger<ErrorController> logger;
+        private TelemetryClient telemetryClient;
 
-        public ErrorController(ILogger<ErrorController> logger)
+        public ErrorController(ILogger<ErrorController> logger, TelemetryClient telemetryClient)
         {
             this.logger = logger;
+            this.telemetryClient = telemetryClient;
         }
 
         // GET: Error
         public ActionResult Index()
         {
+           
             logger.LogInformation("Activating action Error/Index");
-            var telemetryClient = new TelemetryClient();
             try
             {
-                telemetryClient.TrackEvent("Throwing exception");
                 throw new ApplicationException();
             }
-            catch(Exception e)
+            catch (Exception ex)
             {
-                Dictionary<string, string> dict = new Dictionary<string, string>();
-                dict.Add("Action", "Error/Index");
-                telemetryClient.TrackException(e, dict);
+                var telemetry = new ExceptionTelemetry(ex);
+                telemetry.Properties.Add("Action", "Error/Index");
+                telemetryClient.TrackException(telemetry);
             }
             finally
             {
                 telemetryClient.Flush();
             }
-            return View();
+            return View();            
         }
 
         // GET: Error/Details/5

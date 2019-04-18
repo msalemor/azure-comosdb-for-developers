@@ -3,6 +3,7 @@ using ContosoCrm.DataAccess21.Factories;
 using ContosoCrm.DataAccess21.Helpers;
 using ContosoCrm.DataAccess21.Interfaces;
 using ContosoCrm.DataAccess21.Repositories;
+using Microsoft.ApplicationInsights;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -46,6 +47,8 @@ namespace ContosoCrmApp21
             DocumentClientFactory.PreferredLocations = Configuration["PreferredLocations"];
             Region = Configuration["Region"];
 
+            var telemetryClient = new TelemetryClient();
+            services.AddSingleton(telemetryClient);
             services.AddTransient<IDocumentDbHelper<Contact>, ContactDocumentDbRepository>();
             services.AddTransient<IDocumentDbHelper<Company>, CompanyDocumentDbRepository>();
         }
