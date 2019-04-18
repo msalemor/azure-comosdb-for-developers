@@ -8,6 +8,7 @@ using ContosoCrmApp21;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace ContosoCrmApp.Controllers
 {
@@ -16,9 +17,11 @@ namespace ContosoCrmApp.Controllers
         readonly IDocumentDbHelper<Contact> Repository;
         readonly IConfiguration Configuration;
         readonly ContactType DefaultContactType = ContactType.Contact;
+        readonly ILogger<ContactController> logger;
 
-        public ContactController(IDocumentDbHelper<Contact> repo, IConfiguration config)
+        public ContactController(IDocumentDbHelper<Contact> repo, IConfiguration config, ILogger<ContactController> logger)
         {
+            this.logger = logger;
             Repository = repo;
             Configuration = config;
             Repository.Initialize(Configuration[Constants.DatabaseId], Configuration[Constants.CollectionId], partitionKey: Configuration[Constants.CollectionPartionKey]);
@@ -26,6 +29,7 @@ namespace ContosoCrmApp.Controllers
 
         public async Task<IActionResult> Index()
         {
+            logger.LogInformation("Displaying contacts");
             // Optimization: Don't get the notes to minimize the payload
             var result = await Repository.GetItemsAsync
                 (
@@ -89,8 +93,9 @@ namespace ContosoCrmApp.Controllers
                 Repository.CreateItemAsync(contact);
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch(Exception e)
             {
+                logger.LogError(e, "Contact id was not found",null);
                 ViewBag.Area = Constants.ContactArea;
                 return View(contact);
             }
