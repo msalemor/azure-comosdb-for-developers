@@ -29,6 +29,7 @@ namespace ContosoCrmApp21.Controllers
             }
             catch (Exception ex)
             {
+                telemetryClient.TrackEvent("Exception Occured");
                 var telemetry = new ExceptionTelemetry(ex);
                 telemetry.Properties.Add("Action", "Error/Index");
                 telemetryClient.TrackException(telemetry);

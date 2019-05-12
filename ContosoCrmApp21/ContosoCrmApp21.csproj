@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <ApplicationInsightsResourceId>/subscriptions/97e6e7ea-a213-4f0e-87e0-ea14b9781c76/resourcegroups/applicationinsights-demo-rg/providers/microsoft.insights/components/contosocrm1-appinsights</ApplicationInsightsResourceId>
+    <ApplicationInsightsAnnotationResourceId>/subscriptions/97e6e7ea-a213-4f0e-87e0-ea14b9781c76/resourcegroups/applicationinsights-demo-rg/providers/microsoft.insights/components/contosocrm1-appinsights</ApplicationInsightsAnnotationResourceId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -101,6 +103,10 @@
 
   <ItemGroup>
     <UpToDateCheckInput Remove="Views\Contact\Index.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services" />
   </ItemGroup>
 
 </Project>

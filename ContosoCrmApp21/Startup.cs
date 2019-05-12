@@ -1,21 +1,23 @@
 ﻿using ContosoCrm.Common21.Models;
 using ContosoCrm.DataAccess21.Factories;
-using ContosoCrm.DataAccess21.Helpers;
 using ContosoCrm.DataAccess21.Interfaces;
 using ContosoCrm.DataAccess21.Repositories;
 using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Timers;
 
 namespace ContosoCrmApp21
 {
     public class Startup
     {
         public static string Region;
+        private TelemetryClient telemetryClient = new TelemetryClient();
 
         public Startup(IConfiguration configuration)
         {
@@ -47,8 +49,12 @@ namespace ContosoCrmApp21
             DocumentClientFactory.PreferredLocations = Configuration["PreferredLocations"];
             Region = Configuration["Region"];
 
-            var telemetryClient = new TelemetryClient();
+            //var configuration = TelemetryConfiguration.CreateDefault();
+            TelemetryConfiguration.Active.TelemetryChannel.DeveloperMode = true;
+
             services.AddSingleton(telemetryClient);
+
+            //FlushTelemetry();
             services.AddTransient<IDocumentDbHelper<Contact>, ContactDocumentDbRepository>();
             services.AddTransient<IDocumentDbHelper<Company>, CompanyDocumentDbRepository>();
         }
@@ -77,5 +83,26 @@ namespace ContosoCrmApp21
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
+
+        private Timer timer;
+
+        public void FlushTelemetry()
+        {
+            timer = new Timer
+            {
+                Interval = 2000,
+                Enabled = true
+            };
+            timer.Elapsed += Timer_Elapsed;
+        }
+
+        private void Timer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            timer.Enabled = false;
+            // Allow time for flushing:
+            System.Threading.Thread.Sleep(1000);
+            timer.Enabled = true;
+        }
+
     }
 }
