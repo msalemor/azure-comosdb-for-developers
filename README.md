@@ -17,12 +17,12 @@ On every request, the app displays:
 
 ## Why Cosmos DB?
 
-- CosmosDB is the first globally distributed database that offers SLA on availability, throughput and latency. 
+- It is the first globally distributed database that offers SLA on availability, throughput and latency. 
 - If configured with geo-replication, CosmosDB can offer up to 99.999% availability which can help to increase overall availability.
-- Furthermore, CosmosDB allows you to work with a number of APIs including SQL (formerly DocumentDB), MongoDB, Cassandra and Gremlin.
-- Cosmos DB can be configured with different consistency levels which are suitable for a number of scenarios.
-- Cosmos DB can be used both in hot storage and cold storage scenarios.
-- Cosmos DB servers most requests in under 10ms. It is so fast it can be used on globally distributted caching.
+- Supports a number of APIs including SQL (formerly DocumentDB), MongoDB, Cassandra and Gremlin.
+- Can be configured with different consistency levels which are suitable for a number of scenarios.
+- Can be used both in hot storage and cold storage scenarios.
+- Most requests are served in under 10ms. It is so fast it can be used on globally distributted caching.
 
 ## Application Performance Optiomizations
 
@@ -70,7 +70,7 @@ public static DocumentClient Client
   - For local development, consider using the emulator
     - https://docs.microsoft.com/en-us/azure/cosmos-db/local-emulator
 
-# Additional Code Concepts
+<!--# Additional Code Concepts
 
 ```
 while (query.HasMoreResults)
@@ -95,7 +95,7 @@ while (query.HasMoreResults)
 
   - Detect and log the RUs
   - Detect and log the read and write regions
-
+-->
 
 # Important Cosmos DB Concepts
 
@@ -107,7 +107,7 @@ Azure Cosmos DB is Microsoft’s globally distributed multi-model database servi
 
 - https://azure.microsoft.com/en-us/support/legal/sla/cosmos-db/v1_2/
 
-#### Compound Availability
+## Compound Availability
 
 CosmosDB may help in improving compound availability where system A depends on system B. Suppose systems A and B 
 have a 99.95% availability. The total compoind availability would be:
@@ -210,6 +210,8 @@ With Azure Cosmos DB, developers can choose from five well-defined consistency m
 ### More About Consistency Levels
 
 - https://docs.microsoft.com/en-us/azure/cosmos-db/consistency-levels
+
+> **Note:** this link explains consistency levels through a baseball scenario
 
 ## Partitions
 
