@@ -18,7 +18,8 @@ On every request, the app displays:
 ## Why Cosmos DB?
 
 - CosmosDB is the first globally distributed database that offers SLA on availability, throughput and latency. 
-- If configured with geo-replication, CosmosDB can offer up to 99.999% availability. Furthermore, CosmosDB allows you to work with a number of APIs including SQL (formerly DocumentDB), MongoDB, Cassandra and Gremlin.
+- If configured with geo-replication, CosmosDB can offer up to 99.999% availability which can help to increase overall availability.
+- Furthermore, CosmosDB allows you to work with a number of APIs including SQL (formerly DocumentDB), MongoDB, Cassandra and Gremlin.
 - Cosmos DB can be configured with different consistency levels which are suitable for a number of scenarios.
 - Cosmos DB can be used both in hot storage and cold storage scenarios.
 - Cosmos DB servers most requests in under 10ms. It is so fast it can be used on globally distributted caching.
@@ -98,13 +99,13 @@ while (query.HasMoreResults)
 
 # Important Cosmos DB Concepts
 
-## Cosmos Consistency, Models and SLAs
+## Cosmos SLAs
 
 Azure Cosmos DB is Microsoft’s globally distributed multi-model database service. It offers turnkey global distribution across any number of Azure regions by transparently scaling and replicating your data wherever your users are. The service offers comprehensive **99.99% SLAs which covers the guarantees for throughput, consistency, availability and latency** for the Cosmos DB Database Accounts scoped to a single Azure region configured with any of the five Consistency Levels or Database Accounts spanning multiple Azure regions, configured with any of the four relaxed Consistency Levels. Azure Cosmos DB allows configuring multiple Azure regions as writable endpoints for a Database Account. In this configuration, Cosmos DB **offers 99.999% SLA** for both read and write availability. 
 
 ### More About SLAs
 
-https://azure.microsoft.com/en-us/support/legal/sla/cosmos-db/v1_2/
+- https://azure.microsoft.com/en-us/support/legal/sla/cosmos-db/v1_2/
 
 #### Compound Availability
 
@@ -165,11 +166,36 @@ If EnableEndpointDiscovery is set to false, the value of this property is ignore
 
 ## RUs
 
-Azure Cosmos DB is offered in units of solid-state drive (SSD) backed storage and throughput. Request units measure Azure Cosmos DB throughput per second, and request unit consumption varies by operation and JSON document. 
+With Azure Cosmos DB, you pay for the throughput you provision and the storage you consume on an hourly basis. Throughput must be provisioned to ensure that sufficient system resources are available for your Azure Cosmos database at all times. You need enough resources to meet or exceed the Azure Cosmos DB SLAs.
 
-### RU Calculator
+he cost of all database operations is normalized by Azure Cosmos DB and is expressed by Request Units (or RUs, for short). You can think of RUs per second as the currency for throughput. RUs per second is a rate-based currency. It abstracts the system resources such as CPU, IOPS, and memory that are required to perform the database operations supported by Azure Cosmos DB.
 
-https://www.documentdb.com/capacityplanner
+The cost to read a 1 KB item is 1 Request Unit (or 1 RU). All other database operations are similarly assigned a cost using RUs. No matter which API you use to interact with your Azure Cosmos container, costs are always measured by RUs. Whether the database operation is a write, read, or query, costs are always measured in RUs.
+
+Request Unit considerations
+While you estimate the number of RUs per second to provision, consider the following factors:
+
+- **Item size:** As the size of an item increases, the number of RUs consumed to read or write the item also increases.
+- **Item indexing:** By default, each item is automatically indexed. Fewer RUs are consumed if you choose not to index some of your items in a container.
+- **Item property count:** Assuming the default indexing is on all properties, the number of RUs consumed to write an item increases as the item property count increases.
+- **Indexed properties:** An index policy on each container determines which properties are indexed by default. To reduce the RU consumption for write operations, limit the number of indexed properties.
+- **Data consistency:** The strong and bounded staleness consistency levels consume approximately two times more RUs while performing read operations when compared to that of other relaxed consistency levels.
+- **Query patterns:** The complexity of a query affects how many RUs are consumed for an operation. Factors that affect the cost of query operations include:
+  - The number of query results
+  - The number of predicates
+  - The nature of the predicates
+  - The number of user-defined functions
+  - The size of the source data
+  - The size of the result set
+  - Projections
+> Azure Cosmos DB guarantees that the same query on the same data always costs the same number of RUs on repeated executions.
+
+- **Script usage:** As with queries, stored procedures and triggers consume RUs based on the complexity of the operations that are performed. As you develop your application, inspect the request charge header to better understand how much RU capacity each operation consumes.
+
+### More About RUs
+
+- https://docs.microsoft.com/en-us/azure/cosmos-db/request-units
+- https://www.documentdb.com/capacityplanner
 
 ## Consistency Levels
 
@@ -179,9 +205,11 @@ Azure Cosmos DB approaches data consistency as a spectrum of choices instead of 
 
 With Azure Cosmos DB, developers can choose from five well-defined consistency models on the consistency spectrum. From strongest to more relaxed, the models include strong, bounded staleness, session, consistent prefix, and eventual consistency. The models are well-defined and intuitive and can be used for specific real-world scenarios.
 
+![Screenshot](ConsistencyLevels.png)
+
 ### More About Consistency Levels
 
-https://docs.microsoft.com/en-us/azure/cosmos-db/consistency-levels
+- https://docs.microsoft.com/en-us/azure/cosmos-db/consistency-levels
 
 ## Partitions
 
@@ -193,17 +221,14 @@ In addition to a partition key that determines the item’s logical partition, e
 
 Choosing a partition key is an important decision that will affect your application’s performance.
 
-### More About Paritions
-
-https://docs.microsoft.com/en-us/azure/cosmos-db/partitioning-overview
-
-## Partition Key
-
 A logical partition consists of a set of items that have the same partition key. In Azure Cosmos DB, a container is the fundamental unit of scalability. Data that's added to the container and the throughput that you provision on the container are automatically (horizontally) partitioned across a set of logical partitions. Data and throughput are partitioned based on the partition key you specify for the Azure Cosmos container.
 
-### More on partitioning
 
-https://docs.microsoft.com/en-us/azure/cosmos-db/partition-data
+### More About Paritions
+
+- https://docs.microsoft.com/en-us/azure/cosmos-db/partitioning-overview
+- https://docs.microsoft.com/en-us/azure/cosmos-db/partition-data
+
 
 #### Application Partiotion
 
@@ -211,11 +236,17 @@ Cotoso CRM uses the following patition key: **/contactType**
 
 ## Indexing
 
-By default, CosmosDB indexes every attribute in the JSON document is indexed. This can have an impact on both performace and RU consumption. 
+In Azure Cosmos DB, every container has an indexing policy that dictates how the container's items should be indexed. The default indexing policy for newly created containers indexes every property of every item, enforcing range indexes for any string or number, and spatial indexes for any GeoJSON object of type Point. This allows you to get high query performance without having to think about indexing and index management upfront. 
+
+### Application Indexing
 
 In the ContosoCRM application, it is not expected that users will search the notes attribute of the document, therefore it has been disabled.
 
+### More About Indexing
 
+- https://docs.microsoft.com/en-us/azure/cosmos-db/index-policy
+
+<!--
 ## Contact Model
 
 ```
@@ -256,4 +287,5 @@ public class Contact
         public string Notes { get; set; }
     }
 ```
+-->
 

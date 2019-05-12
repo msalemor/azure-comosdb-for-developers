@@ -11,6 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContosoCrm.DataAccess", "Co
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0EFE8AC5-6F5F-4FE3-8944-98220377B0B3}"
 	ProjectSection(SolutionItems) = preProject
+		ConsistencyLevels.png = ConsistencyLevels.png
 		DotnetDockerImage-README.md = DotnetDockerImage-README.md
 		IntelliJ Setup-README.md = IntelliJ Setup-README.md
 		JavaSpringMaven-README.md = JavaSpringMaven-README.md
