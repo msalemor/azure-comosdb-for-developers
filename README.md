@@ -122,7 +122,7 @@ But if system B was CosmosDB at 99.999% then the total compound availability wou
 ```text
 99.95% * 99.999% = 99.949%
 ```
-Note: That could mean up to 250 minutes of downtime a year.
+> Note: That could mean up to 250 minutes of downtime a year.
 
 ## Preferred Locations and EnableEndpointDiscovery
 
