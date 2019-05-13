@@ -112,19 +112,17 @@ Azure Cosmos DB is Microsoft’s globally distributed multi-model database servi
 CosmosDB may help in improving compound availability where system A depends on system B. Suppose systems A and B 
 have a 99.95% availability. The total compoind availability would be:
 
-```
+```text
 A * B = 99.95% * 99.95% = 99.90%
-
-Note: That could mean up to 500 minutes of downtime a year.
 ```
+> Note: That could mean up to 500 minutes of downtime a year.
 
 But if system B was CosmosDB at 99.999% then the total compound availability would be:
 
-```
+```text
 99.95% * 99.999% = 99.949%
-
-Note: That could mean up to 250 minutes of downtime a year.
 ```
+Note: That could mean up to 250 minutes of downtime a year.
 
 ## Preferred Locations and EnableEndpointDiscovery
 
