@@ -192,6 +192,10 @@ While you estimate the number of RUs per second to provision, consider the follo
 
 - **Script usage:** As with queries, stored procedures and triggers consume RUs based on the complexity of the operations that are performed. As you develop your application, inspect the request charge header to better understand how much RU capacity each operation consumes.
 
+### Exceeding RUs
+
+Cosmos DB will return a status code 429 (Too Many Requests) when RUs are exceeded on any operation (Read, Write, Update, Delete). During performance testing, you should increase load until a small rate of requests get throttled. If throttled, the client application should backoff on throttle for the server-specified retry interval. Respecting the backoff ensures that you spend minimal amount of time waiting between retries. Retry policy support is included in Version 1.8.0 and above of the SQL .NETand Java, version 1.9.0 and above of the Node.js and Python, and all supported versions of the .NET Core SDKs. 
+
 ### More About RUs
 
 - https://docs.microsoft.com/en-us/azure/cosmos-db/request-units
