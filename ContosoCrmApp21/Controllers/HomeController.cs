@@ -20,7 +20,7 @@ namespace ContosoCrmApp.Controllers
         readonly IDocumentDbHelper<Contact> Repository;
         readonly IDocumentDbHelper<Lookup> LookupRepository;
         readonly IConfiguration Configuration;
-        IEnumerable<Lookup> types;
+        IEnumerable<Lookup> customerTypes;
 
         public HomeController(IDocumentDbHelper<Contact> repo, IDocumentDbHelper<Lookup> lookup, IConfiguration config, IDocumentDbHelper<Company> companyRepository)
         {
@@ -54,15 +54,18 @@ namespace ContosoCrmApp.Controllers
             if (json == null)
             {
                 // If it does not exists add it
-                types = (await LookupRepository.GetItemsAsync(c => true)).Item5;
-                HttpContext.Session.SetString(CustomerTypes, JsonConvert.SerializeObject(types));
+                customerTypes = (await LookupRepository.GetItemsAsync(c => true)).Item5;
+                HttpContext.Session.SetString(CustomerTypes, JsonConvert.SerializeObject(customerTypes));
+                ViewData["CustomerTypes"] = null;
             }
             else
             {
                 // Deserialize the json back to a .Net object from cache
-                types = JsonConvert.DeserializeObject<IEnumerable<Lookup>>(json);
+                customerTypes = JsonConvert.DeserializeObject<IEnumerable<Lookup>>(json);
+                ViewData["CustomerTypes"] = customerTypes;
             }
 
+            
             var readCharge = CosmosCache.LastReadCharge;
             var lastWriteCharge = CosmosCache.LastWriteCharge;
 

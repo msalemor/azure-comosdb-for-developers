@@ -60,7 +60,25 @@
         &nbsp;<br /><strong>Cosmos DB Information:</strong><br />
         RUs: @ViewBag.TotalRUs<br />
         Read Region: @ViewBag.ReadEndpoint<br />
-        Write Region: @ViewBag.WriteEndpoint<br/>
+        Write Region: @ViewBag.WriteEndpoint<br />
         Consistency Level: @ViewBag.ConsistencyLevel
     </p>
+    <p>
+        Data Loaded from Cosmos DB Cache:
+        <ul>
+            @{
+                var list = ViewData["CustomerTypes"] as IEnumerable<ContosoCrm.Common21.Models.Lookup>;
+                if (!(list is null))
+                {
+                    foreach (var item in list)
+                    {
+                        <li>Key: @item.Key -> Value: @item.Value</li>
+                    }
+                }
+                else
+                {
+                    <li>Data loaded into cache. Refresh to see data from cache.</li>
+                }
+            }
+        </ul>
 </div>
