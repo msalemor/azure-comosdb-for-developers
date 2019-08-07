@@ -16,6 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ContosoCrm.Common21\ContosoCrm.Common21.csproj" />
     <ProjectReference Include="..\ContosoCrm.DataAccess21\ContosoCrm.DataAccess21.csproj" />
+    <ProjectReference Include="..\Microsoft.Extensions.Caching.Cosmos\CosmosDistributedCache.csproj" />
   </ItemGroup>
 
   <ItemGroup>

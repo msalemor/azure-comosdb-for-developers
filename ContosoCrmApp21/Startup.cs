@@ -8,8 +8,11 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.Cosmos.Fluent;
+using Microsoft.Extensions.Caching.Cosmos;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Timers;
 
 namespace ContosoCrmApp21
@@ -36,13 +39,20 @@ namespace ContosoCrmApp21
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
-                .AddJsonOptions(options =>
-                {
-                    options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
-                    options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
-                });
+            services.AddCosmosCache((CosmosCacheOptions cacheOptions) =>
+            {
+                cacheOptions.ContainerName = Configuration["CosmosCacheContainer"];
+                cacheOptions.DatabaseName = Configuration["CosmosCacheDatabase"];
+                cacheOptions.ClientBuilder = new CosmosClientBuilder(Configuration["CosmosConnectionString"]);
+
+                cacheOptions.CreateIfNotExists = true;
+            });
+
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromSeconds(3600);
+                options.Cookie.IsEssential = true;
+            });
 
             DocumentClientFactory.EndpointUri = Configuration["EndpointUri"];
             DocumentClientFactory.AuthKey = Configuration["AuthKey"];
@@ -57,6 +67,15 @@ namespace ContosoCrmApp21
             //FlushTelemetry();
             services.AddTransient<IDocumentDbHelper<Contact>, ContactDocumentDbRepository>();
             services.AddTransient<IDocumentDbHelper<Company>, CompanyDocumentDbRepository>();
+
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .AddJsonOptions(options =>
+                {
+                    options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
+                    options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+                });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -75,7 +94,7 @@ namespace ContosoCrmApp21
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
-
+            app.UseSession();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

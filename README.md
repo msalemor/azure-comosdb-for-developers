@@ -5,7 +5,7 @@ A sample Asp.Net Core Web App using CosmosDB. It emmulates a simple CRM program 
 There are three version of the application:
 
 - .Net Core 2.2 MVC
-- .Net Core 2.1 MVC
+- .Net Core 2.1 MVC with Cosmos DB as a Caching Provider
 - .Net Core 2.1 with Angular 6
 
 On every request, the app displays:

@@ -2,7 +2,9 @@
 using ContosoCrm.DataAccess21.Interfaces;
 using ContosoCrmApp21;
 using ContosoCrmApp21.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Cosmos;
 using Microsoft.Extensions.Configuration;
 using System.Diagnostics;
 using System.Linq;
@@ -25,6 +27,17 @@ namespace ContosoCrmApp.Controllers
 
         public async Task<IActionResult> Index()
         {
+            // Use Cosmos DB for session
+            await HttpContext.Session.LoadAsync();
+            var data = HttpContext.Session.GetString("data");
+            if (data == null)
+            {
+                HttpContext.Session.SetString("data", "someValue");
+            }
+
+            var readCharge = CosmosCache.LastReadCharge;
+            var lastWriteCharge = CosmosCache.LastWriteCharge;
+
             // Execute a cross partition query
             // Demo: compare getting all the properties vs not all the properties
             var result = await Repository.GetItemsAsync(c => true,
