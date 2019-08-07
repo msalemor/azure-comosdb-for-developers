@@ -39,6 +39,8 @@ namespace ContosoCrmApp21
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+
+            // These are caching settings
             services.AddCosmosCache((CosmosCacheOptions cacheOptions) =>
             {
                 cacheOptions.ContainerName = Configuration["CosmosCacheContainer"];
@@ -54,6 +56,7 @@ namespace ContosoCrmApp21
                 options.Cookie.IsEssential = true;
             });
 
+            // These are the application settings
             DocumentClientFactory.EndpointUri = Configuration["EndpointUri"];
             DocumentClientFactory.AuthKey = Configuration["AuthKey"];
             DocumentClientFactory.PreferredLocations = Configuration["PreferredLocations"];

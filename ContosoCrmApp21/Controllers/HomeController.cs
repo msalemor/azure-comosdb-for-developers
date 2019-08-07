@@ -16,6 +16,7 @@ namespace ContosoCrmApp.Controllers
 {
     public class HomeController : Controller
     {
+        private const string CustomerTypes = "customerTypes";
         readonly IDocumentDbHelper<Contact> Repository;
         readonly IDocumentDbHelper<Lookup> LookupRepository;
         readonly IConfiguration Configuration;
@@ -36,7 +37,7 @@ namespace ContosoCrmApp.Controllers
             {
                 await LookupRepository.CreateItemAsync(new Lookup { Area = "Type", Key = "Contact", Value = "Contact" });
                 await LookupRepository.CreateItemAsync(new Lookup { Area = "Type", Key = "Customer", Value = "Customer" });
-                await LookupRepository.CreateItemAsync(new Lookup { Area = "Type", Key = "Lead", Value = "Customer" });
+                await LookupRepository.CreateItemAsync(new Lookup { Area = "Type", Key = "Lead", Value = "Lead" });
             }
         }
 
@@ -49,12 +50,12 @@ namespace ContosoCrmApp.Controllers
             await HttpContext.Session.LoadAsync();
 
             // Try to get the data from sessions
-            var json = HttpContext.Session.GetString("types");
+            var json = HttpContext.Session.GetString(CustomerTypes);
             if (json == null)
             {
                 // If it does not exists add it
                 types = (await LookupRepository.GetItemsAsync(c => true)).Item5;
-                HttpContext.Session.SetString("types", JsonConvert.SerializeObject(types));
+                HttpContext.Session.SetString(CustomerTypes, JsonConvert.SerializeObject(types));
             }
             else
             {
