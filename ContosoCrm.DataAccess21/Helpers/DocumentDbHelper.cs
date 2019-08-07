@@ -16,7 +16,6 @@
     {
         private string databaseId;
         private string collectionId;
-        private string SelfLink;
 
         #region Crud Operations
 

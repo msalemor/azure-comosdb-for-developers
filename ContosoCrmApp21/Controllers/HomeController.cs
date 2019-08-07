@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Cosmos;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,24 +17,49 @@ namespace ContosoCrmApp.Controllers
     public class HomeController : Controller
     {
         readonly IDocumentDbHelper<Contact> Repository;
+        readonly IDocumentDbHelper<Lookup> LookupRepository;
         readonly IConfiguration Configuration;
+        IEnumerable<Lookup> types;
 
-        public HomeController(IDocumentDbHelper<Contact> repo, IConfiguration config, IDocumentDbHelper<Company> companyRepository)
+        public HomeController(IDocumentDbHelper<Contact> repo, IDocumentDbHelper<Lookup> lookup, IConfiguration config, IDocumentDbHelper<Company> companyRepository)
         {
             Configuration = config;
-
-            Repository = repo;            
+            Repository = repo;
+            LookupRepository = lookup;
             Repository.Initialize(Configuration[Constants.DatabaseId], Configuration[Constants.CollectionId], partitionKey: Configuration[Constants.CollectionPartionKey]);
+            LookupRepository.Initialize(Configuration[Constants.DatabaseId], "Lookup", partitionKey: "/id");
+        }
+        private async void LoadLookupAsync()
+        {
+            var items = await LookupRepository.GetItemsAsync(c=>true);
+            if (items.Item5.Count() == 0)
+            {
+                await LookupRepository.CreateItemAsync(new Lookup { Area = "Type", Key = "Contact", Value = "Contact" });
+                await LookupRepository.CreateItemAsync(new Lookup { Area = "Type", Key = "Customer", Value = "Customer" });
+                await LookupRepository.CreateItemAsync(new Lookup { Area = "Type", Key = "Lead", Value = "Customer" });
+            }
         }
 
         public async Task<IActionResult> Index()
         {
-            // Use Cosmos DB for session
+            // Create the lookup data once
+            LoadLookupAsync();
+
+            // Load the session data
             await HttpContext.Session.LoadAsync();
-            var data = HttpContext.Session.GetString("data");
-            if (data == null)
+
+            // Try to get the data from sessions
+            var json = HttpContext.Session.GetString("types");
+            if (json == null)
             {
-                HttpContext.Session.SetString("data", "someValue");
+                // If it does not exists add it
+                types = (await LookupRepository.GetItemsAsync(c => true)).Item5;
+                HttpContext.Session.SetString("types", JsonConvert.SerializeObject(types));
+            }
+            else
+            {
+                // Deserialize the json back to a .Net object from cache
+                types = JsonConvert.DeserializeObject<IEnumerable<Lookup>>(json);
             }
 
             var readCharge = CosmosCache.LastReadCharge;

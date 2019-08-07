@@ -60,13 +60,14 @@ namespace ContosoCrmApp21
             Region = Configuration["Region"];
 
             //var configuration = TelemetryConfiguration.CreateDefault();
-            TelemetryConfiguration.Active.TelemetryChannel.DeveloperMode = true;
+            telemetryClient.Context.Cloud.RoleName = "ContosoCrm";
 
             services.AddSingleton(telemetryClient);
 
             //FlushTelemetry();
             services.AddTransient<IDocumentDbHelper<Contact>, ContactDocumentDbRepository>();
             services.AddTransient<IDocumentDbHelper<Company>, CompanyDocumentDbRepository>();
+            services.AddTransient<IDocumentDbHelper<Lookup>, LookupDocumentDbRepository>();
 
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
@@ -103,25 +104,25 @@ namespace ContosoCrmApp21
             });
         }
 
-        private Timer timer;
+        //private Timer timer;
 
-        public void FlushTelemetry()
-        {
-            timer = new Timer
-            {
-                Interval = 2000,
-                Enabled = true
-            };
-            timer.Elapsed += Timer_Elapsed;
-        }
+        //public void FlushTelemetry()
+        //{
+        //    timer = new Timer
+        //    {
+        //        Interval = 2000,
+        //        Enabled = true
+        //    };
+        //    timer.Elapsed += Timer_Elapsed;
+        //}
 
-        private void Timer_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            timer.Enabled = false;
-            // Allow time for flushing:
-            System.Threading.Thread.Sleep(1000);
-            timer.Enabled = true;
-        }
+        //private void Timer_Elapsed(object sender, ElapsedEventArgs e)
+        //{
+        //    timer.Enabled = false;
+        //    // Allow time for flushing:
+        //    System.Threading.Thread.Sleep(1000);
+        //    timer.Enabled = true;
+        //}
 
     }
 }
